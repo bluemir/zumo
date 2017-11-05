@@ -1,0 +1,75 @@
+/*
++------------------------+
+|     |                  |
++-----+------------------+
+|     |                  |
+|     |                  |
+|     |                  |
+|     |                  |
+|     +------------------+
+|     |                  |
++-----+------------------+
++------------------------+
+*/
+html, body {
+	margin : 0rem;
+	padding: 0rem;
+	height: 100%;
+
+	&>section#main {
+		display: grid;
+		width: 100%;
+		height : 100%;
+
+		grid-template-columns: 15rem auto;
+		grid-template-rows: 2rem auto 2rem 2rem;
+		grid-template-areas:
+			"title  channel-header"
+			"nav    contents"
+		    "nav    input-box"
+			"footer footer";
+		 justify-items: stretch;
+
+		.title {
+			grid-area: title;
+		}
+		.channels {
+			grid-area: nav;
+
+			display: flex;
+			flex-flow: column nowrap;
+
+			ul {
+				flex-grow: 1;
+				li {
+					display: flex;
+					flex-flow: row nowrap;
+					span {
+						flex-grow: 1;
+					}
+				}
+			}
+			button {
+
+			}
+		}
+		.channel-header {
+			grid-area: channel-header;
+		}
+		.message {
+			grid-area: contents;
+		}
+		.input-box {
+			grid-area: input-box;
+
+			display: flex;
+			flex-flow: row nowrap;
+			input[type=text] {
+				flex-grow: 1;
+			}
+			button {
+
+			}
+		}
+	}
+}

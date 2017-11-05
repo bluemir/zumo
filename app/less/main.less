@@ -1,0 +1,92 @@
+@import url("color.less");
+@import url("layout.less");
+
+html, body {
+	font-family: monospace;
+
+	background: @default-background;
+	color: @default-foreground;
+
+	overflow: hidden;
+}
+
+ul {
+	list-style: none;
+	padding: 0rem;
+	li {
+		margin: 0rem;
+	}
+}
+
+.title {
+	margin: 0px;
+
+	border-bottom:  2px solid @layout-line-color;
+}
+.channels {
+	ul {
+		li {
+			font-size: 1.1rem;
+			button {
+				background: none;
+				color: @default-foreground;
+				outline: none;
+				border: none;
+
+				&:hover {
+					color: @select-foreground;
+				}
+			}
+		}
+		li.select {
+			font-weight: bold;
+			color: @select-foreground;
+
+		}
+	}
+
+	border-right: 2px solid @layout-line-color;
+}
+.channel-header {
+	margin: 0px;
+
+	border-bottom:  2px solid @layout-line-color;
+}
+.messages {
+	overflow-x: hidden;
+	overflow-y: scroll;
+
+	border-bottom:  2px solid @layout-line-color;
+
+	padding: 0.5rem;
+}
+.input-box {
+	input[type=text] {
+		background: @default-background;
+		color: @default-foreground;
+		border: none;
+		font-size: 1.2rem;
+
+		&:focus {
+			border: none;
+			outline: none;
+		}
+	}
+	button {
+
+	}
+}
+.copyright {
+	grid-area: footer;
+	text-align: center;
+
+	border-top:  2px solid @layout-line-color;
+	padding: 0.5rem;
+
+	a {
+		color: @default-foreground;
+	}
+}
+
+@import url("./dialog.less");
+@import url("./menu.less");
