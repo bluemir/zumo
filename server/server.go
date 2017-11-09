@@ -28,30 +28,7 @@ func Run(b backend.Backend, p pod.Pod) error {
 	app.GET("/register", func(c *gin.Context) {
 		c.Data(http.StatusOK, "text/html", server.dist.MustBytes("html/register.html"))
 	})
-	app.POST("/register", func(c *gin.Context) {
-		req := &struct {
-			Id       string
-			Password string
-		}{}
-		err := c.Bind(req)
-		if err != nil {
-			return
-		}
-		if _, err := server.backend.CreateUser(req.Id, map[string]string{
-			"zumo.type": "user",
-		}); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
-			return
-		}
-
-		if _, err := server.backend.CreateToken(req.Id, req.Password); err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"msg": err.Error(),
-			})
-			return
-		}
-		c.Redirect(http.StatusSeeOther, "/")
-	})
+	app.POST("/register", server.register)
 
 	app.GET("/ws", server.CheckAuth, server.ws)
 
@@ -69,20 +46,27 @@ func Run(b backend.Backend, p pod.Pod) error {
 
 	app.POST("/api/v1/bots", server.CheckAuth, server.createBot)
 
-	app.POST("/hooks/:hookID", server.CheckAuth) // hook
+	app.POST("/api/v1/hooks", server.CheckAuth, server.createHook) // createhook
+	app.POST("/hooks/:hookID", server.doHook)                      // hook
 
-	app.GET("/adaptor/geo/:hookID", server.CheckAuth)
+	/*
+		plugins := app.Group("/plugin")
+
+		app.POST("/plugin/:plugin/:hookID", server.CheckAuth, func(c *gin.Context) {
+			text, detail, err := plugin.Get(c.Param("plugin")).Handle(c)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+				return
+			}
+			c.JSON(http.StatusOK, msg)
+		})
+	*/
 
 	// will ?
 	/*app.Any("/plugin/todo", server.CheckAuth, func(c *gin.Context) {
 
 	})
-	app.Any("/plugin/geo", server.CheckAuth, func(c *gin.Context) {
-
-	})
-	app.Any("/plugin/check-in", func(c *gin.Context) {
-
-	})*/
+	*/
 	return app.Run("localhost:4000")
 }
 

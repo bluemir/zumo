@@ -18,14 +18,8 @@ class Messages {
 			return // skip
 		}
 
-		var elem = $.create("li", {
-			$html: `${message.Sender} - ${message.Text}`
-		})
+		this.html.appendChild(this._createMessageElement(message));
 
-
-		elem.data = message
-
-		this.html.appendChild(elem)
 		this.scrollToEnd()
 	}
 
@@ -34,15 +28,9 @@ class Messages {
 
 		this.html.clear();
 		res.json.reverse().forEach(function(message){
-			var elem = $.create("li", {
-				$html: `${message.Sender} - ${message.Text}`
-			});
-
-			elem.data = message
-
-			this.html.appendChild(elem);
-			this.scrollToEnd();
+			this.html.appendChild(this._createMessageElement(message));
 		}, this)
+		this.scrollToEnd();
 	}
 	scrollToEnd(){
 		// maybe work...
@@ -50,19 +38,18 @@ class Messages {
 	}
 
 	_createMessageElement(message) {
-
-
 		var elem = $.create("li", {
 			$html: `${message.Sender} - ${message.Text}`
 		});
 
 		elem.data = message
 
-		if (message.Labels["zumo.detail.html"]) {
+		if (message.Detail && message.Detail["zumo.message.detail.html"]) {
 			// TODO add html element for custom element
+			elem.appendChild($.create("div", {
+				$html: message.Detail["zumo.message.detail.html"],
+			}));
 		}
-
-
 
 		return elem
 	}

@@ -2,8 +2,8 @@ import $ from "/static/js/minilib.js";
 
 class Dialog {
 	constructor(){
-		$.get(this.html, "button.ok").on("click", this._submit.bind(this));
-		$.get(this.html, "button.cancel").on("click", this._cancel.bind(this));
+		//$.get(this.html, "button.ok").on("click", this._submit.bind(this));
+		//$.get(this.html, "button.cancel").on("click", this._cancel.bind(this));
 	}
 	show() {
 		this.html.classList.add("show");

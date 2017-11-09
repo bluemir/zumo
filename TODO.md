@@ -7,7 +7,7 @@
 [x] delete channel
 [x] get previous messages
 [ ] user create
-[ ] hooks
+[x] hooks
 [ ] status info(mem, cpu, etc.)
 [ ] server(important)
 [x] refine controll events
@@ -17,4 +17,4 @@
 [x] scroll to end
 [ ] join & leave
 [ ] config file
-[ ] joined channel listen
+[x] joined channel listen

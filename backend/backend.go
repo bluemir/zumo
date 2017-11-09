@@ -32,6 +32,9 @@ type Backend interface {
 	CreateToken(username, unhashedKey string) (*datatype.Token, error)
 	Token(tokenString string) (*datatype.Token, error)
 
+	CreateHook(channelId, username string) (*datatype.Hook, error)
+	DoHook(hookID, text string, detail json.RawMessage) (*datatype.Message, error)
+
 	Join(channeID, username string) error
 	Leave(channelID, username string) error
 

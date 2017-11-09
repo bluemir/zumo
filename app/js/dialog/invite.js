@@ -5,6 +5,8 @@ import KV from "/static/js/kv.js";
 class InviteDialog extends Dialog {
 	constructor(){
 		super();
+		$.get(this.html, "button.ok").on("click", this._submit.bind(this));
+		$.get(this.html, "button.cancel").on("click", this._cancel.bind(this));
 	}
 	get html(){
 		return $.get(".dialog.invite");
@@ -24,6 +26,7 @@ class InviteDialog extends Dialog {
 				username: name,
 			}
 		})
+		this.hide();
 	}
 	_cancel(evt){
 		console.debug("[InviteDialog:_cancel]");

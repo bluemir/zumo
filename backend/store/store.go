@@ -25,6 +25,9 @@ type Store interface {
 	GetToken(username, hashedKey string) (*datatype.Token, error)
 	PutToken(token *datatype.Token) (*datatype.Token, error)
 
+	GetHook(hookID string) (*datatype.Hook, error)
+	PutHook(*datatype.Hook) (*datatype.Hook, error)
+
 	// genaral data, for pod or bots.
 	GetData(namespace, key string, data interface{}) error
 	PutData(namespace, key string, data interface{}) error

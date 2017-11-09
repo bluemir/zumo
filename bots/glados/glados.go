@@ -25,6 +25,8 @@ type GLaDOS struct {
 
 func (bot *GLaDOS) OnMessage(channelID string, msg datatype.Message) {
 	switch {
+	case strings.HasPrefix(msg.Text, "ping"):
+		bot.Say(channelID, "pong", nil)
 	case strings.HasPrefix(msg.Text, bot.Name()+" "):
 		text := msg.Text[len(bot.Name())+1:]
 

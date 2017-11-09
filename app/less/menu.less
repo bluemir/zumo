@@ -2,18 +2,41 @@ menu {
 	display: none;
 	border: 2px solid @layout-line-color;
 	padding: 0rem;
+	background: @default-background;
 
 	&.show {
 		display: block;
 		position: absolute;
-		bottom: 3rem;
-		right: 3rem;
-
+		top: 3rem;
+		left: 3rem;
+		width: 20rem;
 	}
-
 
 	ul, li {
 		padding: 0rem;
 		margin: 0rem;
+	}
+}
+
+.menu {
+
+	ul, li{
+		padding: 0rem;
+		margin: 0rem;
+	}
+
+	ul {
+		display: none;
+		border: 2px solid @layout-line-color;
+		padding: 0rem;
+		background: @default-background;
+
+		&.show {
+			display: block;
+		}
+	}
+
+	button {
+		white-space: nowrap;
 	}
 }

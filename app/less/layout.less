@@ -32,6 +32,29 @@ html, body {
 
 		.title {
 			grid-area: title;
+
+			display: flex;
+			flex-flow: row nowrap;
+			h1 {
+				flex-grow: 1;
+			}
+			.menu.application {
+				position: relative;
+				display: flex;
+				flex-flow: column nowrap;
+				button {
+					flex-grow: 1;
+				}
+				ul {
+					display: none;
+					position: absolute;
+					&.show {
+						display: block;
+					}
+					top: 100%;
+					right: 0rem;
+				}
+			}
 		}
 		.channels {
 			grid-area: nav;
@@ -55,6 +78,14 @@ html, body {
 		}
 		.channel-header {
 			grid-area: channel-header;
+			display: flex;
+			flex-flow: row nowrap;
+			h2 {
+				flex-grow: 1;
+			}
+			button {
+
+			}
 		}
 		.message {
 			grid-area: contents;
@@ -64,6 +95,18 @@ html, body {
 
 			display: flex;
 			flex-flow: row nowrap;
+			.menu {
+				display: flex;
+				position: relative;
+				&>button {
+					flex-grow: 1;
+				}
+				ul {
+					position: absolute;
+					bottom: 100%;
+				}
+			}
+
 			input[type=text] {
 				flex-grow: 1;
 			}

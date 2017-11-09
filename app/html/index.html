@@ -8,67 +8,105 @@
 	</head>
 	<body>
 		<section id="main">
-			<h1 class="title">Zumo</h1>
+			<div class="title">
+				<h1>Zumo</h1>
+				<div class="menu application">
+					<button type="button">*</button>
+					<ul>
+						<li><button>Create Bot</button></li>
+						<li><button>RESERVE</button></li>
+					</ul>
+				</div>
+			</div>
 			<nav class="channels">
 				<button class="channel-create">Create Channel</button>
 				<button class="channel-join">Join Channel</button>
 				<ul></ul>
 				<button class="logout">Log out(switch other user)</button>
 			</nav>
-			<h2 class="channel-header">Channel Title</h2>
+			<div class="channel-header">
+				<h2>Channel Title</h2>
+				<button class="channel-menu">*</button>
+			</div>
 			<article class="messages"></article>
 			<form class="input-box">
-				<button type="button" class="channel-menu">menu</button>
+				<div class="menu input">
+					<button type="button">+</button>
+					<ul>
+						<li><button class="link" type="button">Add Link</button></li>
+						<li><button class="location" type="button">Add location</button></li>
+					</ul>
+				</div>
 				<input type="text" />
 				<button type="submit">Send</button>
 			</form>
 			<footer class="copyright">
 				Zumo. made by <a href="https://wikinote.bluemir.me/profile">Bluemir</a>
-				<button class="bot-create">Create Bot</button>
-				<a href="//__:__@localhost:4000"> test</a>
 			</footer>
 		</section>
 		<!-- dialogs -->
-		<article class="dialog channel-create">
-			<h2>Create Channel</h2>
-			<form>
-				<input type="text"/>
-				<button class="ok">Create</button>
-				<button class="cancel">Cancel</button>
-			</form>
-		</article>
-		<article class="dialog bot-create">
-			<h2>Create bot</h2>
-			<form>
-				<input name="name" type="text">
-				<input name="driver" type="text">
-				<button class="ok">Create</button>
-				<button class="cancel">Cancel</button>
-			</form>
-		</article>
-		<article class="dialog channel-join hide">
-			<h2>Join Channel</h2>
-			<form>
-				<select></select>
-				<button class="ok">OK</button>
-				<button class="cancel">Cancel</button>
-			</form>
-		</article>
-		<article class="dialog invite">
-			<h2>Invite Channel</h2>
-			<form>
-				<!-- TODO -->
-				<input name="username" type="text" />
-				<button class="ok">OK</button>
-				<button class="cancel">Cancel</button>
-			</form>
-		</article>
-		<menu class="channel">
-			<ul>
-				<li><button class="invite">Invite</button></li>
-				<li><button class="leave">Leave</button></li>
-			</ui>
-		</menu>
+		<aside>
+			<article class="dialog channel-create">
+				<h2>Create Channel</h2>
+				<form>
+					<input type="text"/>
+					<button class="ok">Create</button>
+					<button class="cancel">Cancel</button>
+				</form>
+			</article>
+			<article class="dialog bot-create">
+				<h2>Create bot</h2>
+				<form>
+					<input name="name" type="text">
+					<input name="driver" type="text">
+					<button class="ok">Create</button>
+					<button class="cancel">Cancel</button>
+				</form>
+			</article>
+			<article class="dialog channel-join hide">
+				<h2>Join Channel</h2>
+				<form>
+					<select></select>
+					<button class="ok">OK</button>
+					<button class="cancel">Cancel</button>
+				</form>
+			</article>
+			<article class="dialog invite">
+				<h2>Invite Channel</h2>
+				<form>
+					<!-- TODO -->
+					<input name="username" type="text"/>
+					<button class="ok">OK</button>
+					<button class="cancel">Cancel</button>
+				</form>
+			</article>
+			<article class="dialog hook-create">
+				<h2>Hook Create</h2>
+				<form>
+					<input name="username" type="text" placeholder="User Name" />
+					<button class="ok">OK</button>
+					<button class="cancel">Cancel</button>
+				</form>
+			</article>
+			<menu class="channel">
+				<ul>
+					<li><button class="invite">Invite</button></li>
+					<li><button class="leave">Leave</button></li>
+					<li><button class="hook-create">Create Hook</button></li>
+				</ui>
+			</menu>
+			<menu class="main">
+				<ul>
+					<li><button class="bot-create">Create Bot</button></li>
+				</ul>
+			</menu>
+			<menu class="input-box">
+				<ul>
+					<li><button class="link">Add Link</button></li>
+					<li><button class="location">Add location data</button></li>
+				</ul>
+			</menu>
+		</aside>
 		<script type="module" src="/static/js/main.js"></script>
 	</body>
 </html>

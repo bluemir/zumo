@@ -75,18 +75,23 @@ func (bot *TodoBot) List(channelId string) {
 	}
 
 	str := `TODO List`
+	//html := `<ul>`
 
 	for _, job := range data.Jobs {
 		if job.IsDone {
 			str += "<br/>[x] " + job.Text
+			//html += `<li><input type="checkbox" checked />` + job.Text + `</li>`
 			//bot.Say(channelId, "[x] "+job.Text, nil)
 		} else {
 			str += "<br/>[ ] " + job.Text
+			//html += `<li><input type="checkbox" />` + job.Text + `</li>`
 			//bot.Say(channelId, "[ ] "+job.Text, nil)
 		}
 	}
+	//html += "</ul>"
+
 	bot.Say(channelId, str, map[string]string{
-		"zumo.messge.detail.html": `<ul><li><input type="check" /></li></ul>`, // TODO list
+	//	"zumo.message.detail.html": html, // TODO list
 	})
 }
 
