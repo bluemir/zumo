@@ -20,7 +20,7 @@ class Messages {
 
 		this.html.appendChild(this._createMessageElement(message));
 
-		this.scrollToEnd()
+		this.scrollToEnd();
 	}
 
 	async _loadMessage() {

@@ -21,7 +21,7 @@ class Dialog {
 	}
 	async submit(e) {
 		var name = $.get(this.html, "input[type=text]").value;
-		e.preventDefault()
+		e.preventDefault();
 
 		try {
 			var channel = await $.request("POST", "/api/v1/channels", {

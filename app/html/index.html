@@ -13,7 +13,8 @@
 				<div class="menu application">
 					<button type="button">*</button>
 					<ul>
-						<li><button>Create Bot</button></li>
+						<li><button class="bot-create">Create Bot</button></li>
+						<!--li><button class="channel-create">Create channel</button></li-->
 						<li><button>RESERVE</button></li>
 					</ul>
 				</div>
@@ -26,7 +27,14 @@
 			</nav>
 			<div class="channel-header">
 				<h2>Channel Title</h2>
-				<button class="channel-menu">*</button>
+				<div class="menu channel">
+					<button>*</button>
+					<ul>
+						<li><button class="invite">Invite</button></li>
+						<li><button class="leave">Leave</button></li>
+						<li><button class="hook-create">Create Hook</button></li>
+					</ul>
+				</div>
 			</div>
 			<article class="messages"></article>
 			<form class="input-box">
@@ -49,17 +57,17 @@
 			<article class="dialog channel-create">
 				<h2>Create Channel</h2>
 				<form>
-					<input type="text"/>
-					<button class="ok">Create</button>
-					<button class="cancel">Cancel</button>
+					<input type="text" />
+					<button class="ok"     type="submit">Create</button>
+					<button class="cancel" type="button">Cancel</button>
 				</form>
 			</article>
 			<article class="dialog bot-create">
 				<h2>Create bot</h2>
 				<form>
-					<input name="name" type="text">
+					<input name="name"   type="text">
 					<input name="driver" type="text">
-					<button class="ok">Create</button>
+					<button class="ok"    >Create</button>
 					<button class="cancel">Cancel</button>
 				</form>
 			</article>
@@ -67,7 +75,7 @@
 				<h2>Join Channel</h2>
 				<form>
 					<select></select>
-					<button class="ok">OK</button>
+					<button class="ok"    >OK</button>
 					<button class="cancel">Cancel</button>
 				</form>
 			</article>
@@ -76,7 +84,7 @@
 				<form>
 					<!-- TODO -->
 					<input name="username" type="text"/>
-					<button class="ok">OK</button>
+					<button class="ok"    >OK</button>
 					<button class="cancel">Cancel</button>
 				</form>
 			</article>
@@ -88,24 +96,6 @@
 					<button class="cancel">Cancel</button>
 				</form>
 			</article>
-			<menu class="channel">
-				<ul>
-					<li><button class="invite">Invite</button></li>
-					<li><button class="leave">Leave</button></li>
-					<li><button class="hook-create">Create Hook</button></li>
-				</ui>
-			</menu>
-			<menu class="main">
-				<ul>
-					<li><button class="bot-create">Create Bot</button></li>
-				</ul>
-			</menu>
-			<menu class="input-box">
-				<ul>
-					<li><button class="link">Add Link</button></li>
-					<li><button class="location">Add location data</button></li>
-				</ul>
-			</menu>
 		</aside>
 		<script type="module" src="/static/js/main.js"></script>
 	</body>

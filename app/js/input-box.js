@@ -44,11 +44,11 @@ class InputBox {
 
 		this.clear();
 	}
-	addDetail(name, obj) {
+	async addDetail(name, obj) {
 		this._buffer[name] = obj;
 		// TODO show detail icon or values on screen
-		
 	}
+	// TODO disable submit (when get location ...)
 }
 
 

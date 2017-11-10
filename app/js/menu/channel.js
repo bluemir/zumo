@@ -7,22 +7,25 @@ var hookCreateDialog = new HookCreateDialog();
 
 class ChannelMenu {
 	constructor() {
+		$.get(".channel.menu>button").on("click", this.toggle.bind(this));
+
 		$.get(this.html, "button.invite").on("click", this._invite.bind(this));
 		$.get(this.html, "button.leave").on("click", this._leave.bind(this));
 		$.get(this.html, "button.hook-create").on("click", this._hookCreate.bind(this));
 	}
 	get html(){
-		return $.get("menu.channel")
+		return $.get(".menu.channel")
 	}
 	show() {
 		console.debug("[channel:menu:show]")
-		this.html.classList.add("show");
+		$.get(this.html, "ul").classList.add("show");
 	}
 	hide() {
-		this.html.classList.remove("show");
+		$.get(this.html, "ul").classList.remove("show");
 	}
 	toggle () {
-		this.html.classList.toggle("show");
+		console.debug("[channel:menu:toggle]")
+		$.get(this.html, "ul").classList.toggle("show");
 	}
 	_invite() {
 		this.hide();

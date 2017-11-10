@@ -83,8 +83,22 @@ html, body {
 			h2 {
 				flex-grow: 1;
 			}
-			button {
-
+			.menu {
+				display: flex;
+				flex-flow: column nowrap;
+				position: relative;
+				button {
+					flex-grow: 1;
+				}
+				ul {
+					display: none;
+					position: absolute;
+					right: 0rem;
+					top: 100%;
+					&.show {
+						display: block;
+					}
+				}
 			}
 		}
 		.message {

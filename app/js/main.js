@@ -45,4 +45,13 @@ channelList.onTargetChange(function(channel){
 	$.get(".channel-header h2").innerHTML = channel.Name;
 })
 
-Buttons();
+Buttons(inputbox);
+
+// init menus
+import ChannelMenu from "/static/js/menu/channel.js"
+import InputMenu from "/static/js/menu/input.js"
+import ApplicationMenu from "/static/js/menu/application.js";
+
+var channelMenu         = new ChannelMenu();
+var inputMenu           = new InputMenu(inputbox);
+var applicationMenu     = new ApplicationMenu();
