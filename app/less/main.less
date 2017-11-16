@@ -68,19 +68,49 @@ ul {
 	border-bottom:  2px solid @layout-line-color;
 
 	padding: 0.5rem;
+
+	li.message {
+		list-style: none;
+
+		a.author {
+			float: left;
+			max-width: 9rem;
+		}
+		p.text {
+			padding-left: 10rem;
+			margin: 0rem;
+		}
+	}
 }
 .input-box {
+	.menu {
+		border-right: 2px solid @layout-line-color;
+	}
+	.status {
+		li {
+			display: none;
+		}
+		[data-status=""] {
+			display: none
+		}
+		[data-status="loading"] {
+			display: block;
+			color: gray; // TODO color name
+		}
+		[data-status="ready"]{
+			display: block;
+			color: green; // TODO color name
+		}
+	}
 	input[type=text] {
 		background: @default-background;
 		color: @default-foreground;
 		border: none;
-		border-left: 2px solid @layout-line-color;
 		border-right: 2px solid @layout-line-color;
 
 		&:focus {
 			border: none;
 			outline: none;
-			border-left: 2px solid @layout-line-color;
 			border-right: 2px solid @layout-line-color;
 		}
 	}

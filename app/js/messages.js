@@ -39,16 +39,20 @@ class Messages {
 
 	_createMessageElement(message) {
 		var elem = $.create("li", {
-			$html: `${message.Sender} - ${message.Text}`
+			class: "message",
+			$html: `<a class="author">${message.Sender}</a><p class="text">${message.Text}</p>`,
 		});
 
-		elem.data = message
+		elem.data = message;
 
-		if (message.Detail && message.Detail["zumo.message.detail.html"]) {
-			// TODO add html element for custom element
-			elem.appendChild($.create("div", {
-				$html: message.Detail["zumo.message.detail.html"],
-			}));
+		if (!message.Detail) {
+			return elem;
+		}
+
+		if (message.Detail["zumo.message.html"]) {
+			// replace text to html
+			console.log($.get(elem, ".text"))
+			$.get(elem, ".text").innerHTML = message.Detail["zumo.message.html"];
 		}
 
 		return elem

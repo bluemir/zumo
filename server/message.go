@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,7 +23,8 @@ func (server *Server) postMessage(c *gin.Context) {
 	channelID := c.Param("channelID")
 	username := c.MustGet(keyUsername).(string)
 	msg := &struct {
-		Text string
+		Text   string
+		Detail json.RawMessage
 	}{}
 
 	if err := c.Bind(msg); err != nil {
@@ -31,6 +33,6 @@ func (server *Server) postMessage(c *gin.Context) {
 		return
 	}
 
-	server.backend.AppendMessage(username, channelID, msg.Text, []byte("{}"))
+	server.backend.AppendMessage(username, channelID, msg.Text, msg.Detail)
 	c.JSON(http.StatusOK, gin.H{"msg": "ok"})
 }

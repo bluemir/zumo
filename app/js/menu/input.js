@@ -23,20 +23,10 @@ class InputMenu{
 		// TODO maybe move this method to input box this menu only trigger or show menus...
 		console.debug("[menu:input:_putLocationToMessage]")
 		this.hide();
-		// TODO show progress
-		var geo = await getLocation(); // it takes long.
-		console.log(geo);
-		this._inputbox.addDetail("zumo.message.location", {"geo":"temp"}); // invalidate by inputbox
-
+		this._inputbox.addLocation();
 	}
 	_putLinkToMessage() {
 		this._inputbox.addDetail("zumo.message.link", {"data": ""});
 	}
-}
-
-async function getLocation() {
-	return new Promise(function(resolve, reject){
-		navigator.geolocation.getCurrentPosition(resolve)
-	});
 }
 export default InputMenu;

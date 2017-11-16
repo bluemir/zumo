@@ -78,6 +78,14 @@ var $ = {
 		return new Promise(function(resolve, reject){
 			setTimeout(resolve, ms);
 		});
+	},
+	defer: function() {
+		var ret = {}
+		ret.promise = new Promise(function(resolve, reject){
+			ret.resolve = resolve;
+			ret.reject = reject;
+		});
+		return ret;
 	}
 }
 
@@ -116,6 +124,14 @@ function extend(TargetClass, proto){
 }
 
 extend(Element, {
+	attr: function(name, value){
+		if (value !== undefined) {
+			this.setAttribute(name, value)
+			return value;
+		} else {
+			return this.getAttribute(name)
+		}
+	},
 	"removeThis" : function(){
 		this.parentElement.removeChild(this);
 	},

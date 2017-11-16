@@ -7,5 +7,4 @@ import (
 	_ "github.com/bluemir/zumo/bots/glados"
 	_ "github.com/bluemir/zumo/bots/todo"
 	// server plugins
-	//_ "github.com/bluemir/zumo/server/plugins/geo"
 )
