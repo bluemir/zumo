@@ -1,6 +1,13 @@
 import $ from "/static/js/minilib.js";
 import KV from "/static/js/kv.js";
 
+/*
+# optional message data
+
+zumo.message.html: replace default text with html
+
+*/
+
 class Messages {
 	constructor () {
 		KV.watch("channelID", this._loadMessage.bind(this));
@@ -38,9 +45,11 @@ class Messages {
 	}
 
 	_createMessageElement(message) {
+
+		var msg = message.Text.replace(/(\r|\n|\r\n)/g, "<br/>")
 		var elem = $.create("li", {
 			class: "message",
-			$html: `<a class="author">${message.Sender}</a><p class="text">${message.Text}</p>`,
+			$html: `<a class="author">${message.Sender}</a><p class="text">${msg}</p>`,
 		});
 
 		elem.data = message;

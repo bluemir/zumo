@@ -14,7 +14,8 @@ const (
 	keyUsername = "USERNAME"
 )
 
-func Run(b backend.Backend, p pod.Pod) error {
+// Run is
+func Run(b backend.Backend, p pod.Pod, conf *Config) error {
 	app := gin.Default()
 
 	server := &Server{b, p, rice.MustFindBox("../dist")}
@@ -49,33 +50,17 @@ func Run(b backend.Backend, p pod.Pod) error {
 	app.POST("/api/v1/hooks", server.CheckAuth, server.createHook) // createhook
 	app.POST("/hooks/:hookID", server.doHook)                      // hook
 
-	/*
-		plugins := app.Group("/plugin")
-
-		app.POST("/plugin/:plugin/:hookID", server.CheckAuth, func(c *gin.Context) {
-			text, detail, err := plugin.Get(c.Param("plugin")).Handle(c)
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
-				return
-			}
-			c.JSON(http.StatusOK, msg)
-		})
-	*/
-
-	// will ?
-	/*app.Any("/plugin/todo", server.CheckAuth, func(c *gin.Context) {
-
-	})
-	*/
-	return app.Run("localhost:4000")
+	return app.Run(conf.Bind)
 }
 
+// Server is
 type Server struct {
 	backend backend.Backend
 	pod     pod.Pod // use kv leadership
 	dist    *rice.Box
 }
 
+// CheckAuth is
 func (server *Server) CheckAuth(c *gin.Context) {
 	str := c.GetHeader("Authorization")
 	if str == "" {
