@@ -79,13 +79,11 @@ func (bot *TodoBot) List(channelId string) {
 
 	for _, job := range data.Jobs {
 		if job.IsDone {
-			str += "<br/>[x] " + job.Text
-			html += `<li><input type="checkbox" checked />` + job.Text + `</li>`
-			//bot.Say(channelId, "[x] "+job.Text, nil)
+			str += "\n[x] " + job.Text
+			html += `<li><input type="checkbox" checked disabled/>` + job.Text + `</li>`
 		} else {
-			str += "<br/>[ ] " + job.Text
-			html += `<li><input type="checkbox" />` + job.Text + `</li>`
-			//bot.Say(channelId, "[ ] "+job.Text, nil)
+			str += "\n[ ] " + job.Text
+			html += `<li><input type="checkbox" disabled/>` + job.Text + `</li>`
 		}
 	}
 	html += "</ul>"
