@@ -39,9 +39,9 @@ func (bot *HTTPChecker) OnMessage(channelId string, msg datatype.Message) {
 			return
 		}
 		if ok {
-			bot.Say(channelId, "not normal", nil)
-		} else {
 			bot.Say(channelId, "normal", nil)
+		} else {
+			bot.Say(channelId, "not normal", nil)
 		}
 	case strings.HasPrefix(msg.Text, bot.Name()+" register"):
 		// TODO parse last part for fast register

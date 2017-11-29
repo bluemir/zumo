@@ -35,6 +35,8 @@ func (bot *TodoBot) OnMessage(channelId string, msg datatype.Message) {
 		bot.Remove(channelId, msg.Text[l:]) // i know bad parsing
 	case (strings.Contains(msg.Text, bot.Name()) && strings.Contains(msg.Text, "list")):
 		bot.List(channelId)
+	case (strings.Contains(msg.Text, bot.Name())) && strings.Contains(msg.Text, "clean"):
+		bot.Cleanup(channelId)
 	case msg.Text == "todo list":
 		bot.List(channelId)
 	}
@@ -61,6 +63,22 @@ func (bot *TodoBot) Remove(channelId string, text string) {
 	bot.do(channelId, text, func(data *Data) {
 		data.remove(text)
 	})
+}
+func (bot *TodoBot) Cleanup(channelID string) {
+	data := &Data{}
+	bot.MustLoad(channelID, data)
+
+	jobs := []Job{}
+
+	for _, job := range data.Jobs {
+		if !job.IsDone {
+			jobs = append(jobs, job)
+		}
+	}
+
+	data.Jobs = jobs
+	bot.MustSave(channelID, data)
+	bot.Say(channelID, "ok jobs complete", nil)
 }
 
 func (bot *TodoBot) List(channelId string) {
