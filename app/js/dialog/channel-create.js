@@ -1,7 +1,9 @@
 import $ from "/static/js/minilib.js";
+import Dialog from "/static/js/dialog/dialog.js";
 
-class Dialog {
+class ChannelCreateDialog extends Dialog{
 	constructor(){
+		super();
 		console.debug("[dialog:channel-create:init]");
 
 		$.get(this.html, "button.ok").on("click", this.submit.bind(this));
@@ -9,12 +11,6 @@ class Dialog {
 	}
 	get html() {
 		return $.get(".dialog.channel-create")
-	}
-	show() {
-		this.html.classList.add("show")
-	}
-	hide() {
-		this.html.classList.remove("show")
 	}
 	clear() {
 		$.get(this.html, "input[type=text]").value = "";
@@ -40,4 +36,4 @@ class Dialog {
 	}
 }
 
-export default new Dialog();
+export default ChannelCreateDialog;

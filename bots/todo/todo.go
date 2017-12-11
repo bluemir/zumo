@@ -37,9 +37,15 @@ func (bot *TodoBot) OnMessage(channelId string, msg datatype.Message) {
 		bot.List(channelId)
 	case (strings.Contains(msg.Text, bot.Name())) && strings.Contains(msg.Text, "clean"):
 		bot.Cleanup(channelId)
+	case strings.Contains(msg.Text, bot.Name()) && strings.Contains(msg.Text, "help"):
+		bot.Help(channelId)
 	case msg.Text == "todo list":
 		bot.List(channelId)
 	}
+}
+
+func (bot *TodoBot) Help(channelID string) {
+	bot.Say(channelID, "commands: ping, TODO, DONE, remove, list, clean", nil)
 }
 
 func (bot *TodoBot) Add(channelId string, text string) {

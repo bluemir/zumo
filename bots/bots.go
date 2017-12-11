@@ -18,7 +18,7 @@ type Connector interface {
 	Name() string
 
 	// send message
-	Say(channelId string, text string, detail interface{})
+	Say(channelID string, text string, detail interface{})
 }
 type DataStore = backend.DataStore
 

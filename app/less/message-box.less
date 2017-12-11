@@ -1,0 +1,20 @@
+.message-box {
+	position: fixed;
+	width: 20rem;
+	top: 2.5rem;
+	right: 1rem;
+
+	div {
+		border: 1px solid @select-foreground;
+		background: @message-panel-background;
+
+		animation-delay: 2s;
+		animation-duration: 3s;
+
+		animation-name: fadeout;
+	}
+	.warn {
+		color: @warning-foreground;
+		background: @warning-background;
+	}
+}

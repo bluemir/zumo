@@ -4,9 +4,8 @@ import ChannelCreateDialog from "/static/js/dialog/channel-create.js";
 import ChannelJoinDialog from "/static/js/dialog/channel-join.js";
 
 function init() {
-	var channelCreateDialog = ChannelCreateDialog;
+	var channelCreateDialog = new ChannelCreateDialog();
 	var channelJoinDialog   = new ChannelJoinDialog();
-
 
 	button("button.channel-create",    e => channelCreateDialog.show())
 	button("button.channel-join",      e => channelJoinDialog.show())

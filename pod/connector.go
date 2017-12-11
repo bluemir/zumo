@@ -21,7 +21,9 @@ func (p *pod) NewConnector(user datatype.User) bots.Connector {
 func (c *connector) Name() string {
 	return c.user.Name
 }
-func (c *connector) Say(channelId string, text string, detail interface{}) {
+
+// Say is
+func (c *connector) Say(channelID string, text string, detail interface{}) {
 	if detail == nil {
 		detail = map[string]string{}
 	}
@@ -29,5 +31,5 @@ func (c *connector) Say(channelId string, text string, detail interface{}) {
 	if err != nil {
 		logrus.Warnf("[bot:%s:say] %s", c.user.Name, err.Error())
 	}
-	c.AppendMessage(c.user.Name, channelId, text, json.RawMessage(buf))
+	c.AppendMessage(c.user.Name, channelID, text, json.RawMessage(buf))
 }

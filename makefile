@@ -65,7 +65,6 @@ dist/%: app/%
 	cp $< $@
 
 tools:
-	npm install -g traceur
 	npm install -g less
 	go get github.com/GeertJohan/go.rice/rice
 clean:

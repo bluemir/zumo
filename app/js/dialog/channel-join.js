@@ -1,6 +1,6 @@
 import $ from "/static/js/minilib.js";
 
-class Dialog {
+class ChannelJoinDialog {
 	constructor(){
 		$.get(this.html, "button.ok").on("click", this._submit.bind(this));
 		$.get(this.html, "button.cancel").on("click", this._cancel.bind(this));
@@ -44,4 +44,4 @@ class Dialog {
 	}
 }
 
-export default Dialog;
+export default ChannelJoinDialog;

@@ -8,10 +8,12 @@ import (
 	"github.com/bluemir/zumo/datatype"
 )
 
+// Pod is
 type Pod interface {
 	CreateBot(name string, driver string) error
 }
 
+// New is
 func New(b backend.Backend) (Pod, error) {
 
 	p := &pod{b}
