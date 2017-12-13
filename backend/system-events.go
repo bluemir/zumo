@@ -40,3 +40,16 @@ type SystemEvents struct {
 
 	Error chan error
 }
+
+func NewSystemEvents() *SystemEvents {
+	return &SystemEvents{
+		Join:  make(chan JoinEvent),
+		Leave: make(chan LeaveEvent),
+
+		CreateChannel: make(chan CreateChannelEvent),
+		DeleteChannel: make(chan DeleteChannelEvent),
+		UpdateChannel: make(chan UpdateChannelEvent),
+
+		Error: make(chan error),
+	}
+}

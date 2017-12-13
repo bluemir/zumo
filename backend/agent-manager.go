@@ -63,9 +63,10 @@ func (m *UserAgentManager) DeliverJoin(name string, channelID string) {
 func (m *UserAgentManager) DeliverLeave(name string, channelID string) {
 	m.lock.RLock()
 	defer m.lock.RUnlock()
+	logrus.Debugf("[UserAgentManager:DeliverLeave] name: %s, channelID: %s", name, channelID)
 
 	for _, a := range m.agents[name] {
-		// m.backend.channels[channelID].RemoveListener(a)
+		m.backend.channels[channelID].RemoveListener(a)
 
 		a.OnLeaveChannel(channelID)
 	}

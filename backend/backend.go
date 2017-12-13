@@ -57,16 +57,7 @@ func New(conf *Config) (Backend, error) {
 	b := &backend{}
 
 	// will be queued later
-	events := &SystemEvents{
-		Join:  make(chan JoinEvent),
-		Leave: make(chan LeaveEvent),
-
-		CreateChannel: make(chan CreateChannelEvent),
-		DeleteChannel: make(chan DeleteChannelEvent),
-		UpdateChannel: make(chan UpdateChannelEvent),
-
-		Error: make(chan error),
-	}
+	events := NewSystemEvents()
 
 	// store
 	if store, err := store.New(conf.Store.Driver, conf.Store.Endpoint, &StoreEventHandler{b, events}, nil); err != nil {
