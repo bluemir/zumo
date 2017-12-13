@@ -3,6 +3,8 @@ import $ from "/static/js/minilib.js";
 import KV from "/static/js/kv.js";
 import PositionWatcher from "/static/js/modules/position-watcher.js";
 
+import context from "/static/js/context.js";
+
 const STATUS = "data-status";
 const LOADING = "loading";
 const READY = "ready";
@@ -38,6 +40,7 @@ class InputBox {
 		if (!KV.channelID) {
 			// TODO
 			console.error("[InputBox:_onSubmit] cannot find channelID");
+			context.log.error("must click channel first");
 			return
 		}
 		if (this.text == "") {

@@ -1,6 +1,8 @@
 import $ from "/static/js/minilib.js";
 import Dialog from "/static/js/dialog/dialog.js";
 
+import context from "/static/js/context.js";
+
 class ChannelCreateDialog extends Dialog{
 	constructor(){
 		super();
@@ -8,9 +10,10 @@ class ChannelCreateDialog extends Dialog{
 
 		$.get(this.html, "button.ok").on("click", this.submit.bind(this));
 		$.get(this.html, "button.cancel").on("click", this.hide.bind(this));
+
 	}
 	get html() {
-		return $.get(".dialog.channel-create")
+		return $.get(".dialog.channel-create");
 	}
 	clear() {
 		$.get(this.html, "input[type=text]").value = "";
@@ -26,11 +29,13 @@ class ChannelCreateDialog extends Dialog{
 				 }
 			 });
 			console.log("create channel", name)
+			context.log.info(`${name} channel created!`);
 			this.hide();
 			this.clear();
 		} catch(e) {
 			// TODO show error message
 			console.warn("error on create channel", name)
+			context.log.error("error on create channel!");
 			this.hide();
 		}
 	}

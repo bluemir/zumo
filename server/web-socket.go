@@ -30,9 +30,11 @@ func (t *translater) channelChnaged(channelID string) {
 	}{"event", "channel", map[string]string{"ID": channelID}})
 }
 func (t *translater) OnJoinChannel(channelID string) {
+	// send to client
 	t.channelChnaged(channelID)
 }
 func (t *translater) OnLeaveChannel(channelID string) {
+	// send to client
 	t.channelChnaged(channelID)
 }
 func (t *translater) runDispatcher() {

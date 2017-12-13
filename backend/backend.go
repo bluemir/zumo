@@ -32,45 +32,47 @@ type Backend interface {
 	CreateToken(username, unhashedKey string) (*datatype.Token, error)
 	Token(tokenString string) (*datatype.Token, error)
 
-	CreateHook(channelId, username string) (*datatype.Hook, error)
+	CreateHook(channelID, username string) (*datatype.Hook, error)
 	DoHook(hookID, text string, detail json.RawMessage) (*datatype.Message, error)
 
 	Join(channeID, username string) error
 	Leave(channelID, username string) error
 
-	RegisterUserAgent(username string, ua UserAgent) error
-	AddEventListener(EventListener)
-
 	RequestDataStore(namespace string) DataStore
+
+	RegisterUserAgent(username string, ua UserAgent) error
+	// UnregisterUserAgent
 }
 
+// seprate backend
 type backend struct {
 	store store.Store
 
-	channels map[string]*ChannelDispatcher
-	//users    map[string]*UserModel
-
-	events *emmiter
-
-	agents []*agent
+	channels         map[string]*ChannelDispatcher
+	userAgentManager *UserAgentManager
 }
 
 // New is
 func New(conf *Config) (Backend, error) {
 	b := &backend{}
 
+	// will be queued later
+	events := &SystemEvents{
+		Join:  make(chan JoinEvent),
+		Leave: make(chan LeaveEvent),
+
+		CreateChannel: make(chan CreateChannelEvent),
+		DeleteChannel: make(chan DeleteChannelEvent),
+		UpdateChannel: make(chan UpdateChannelEvent),
+
+		Error: make(chan error),
+	}
+
 	// store
-	if store, err := store.New(conf.Store.Driver, conf.Store.Endpoint, &sync{b}, nil); err != nil {
+	if store, err := store.New(conf.Store.Driver, conf.Store.Endpoint, &StoreEventHandler{b, events}, nil); err != nil {
 		return nil, err
 	} else {
 		b.store = store
-	}
-
-	// emmiter
-	if e, err := newEmmiter(); err != nil {
-		return nil, err
-	} else {
-		b.events = e
 	}
 
 	// channel dispatcher
@@ -86,6 +88,11 @@ func New(conf *Config) (Backend, error) {
 			b.channels[channel.ID] = dispacter
 		}
 	}
+
+	b.userAgentManager = NewUserAgentManager(b)
+
+	// start main loop
+	go b.runDispatcher(events)
 
 	return b, nil
 }

@@ -1,14 +1,13 @@
 import MessageBox from "/static/js/message-box.js";
 
+
 class Context {
 	constructor() {
 		this._logger = new Logger();
-
 	}
 	get log(){
 		return this._logger;
 	}
-
 }
 
 class Logger {
@@ -20,6 +19,15 @@ class Logger {
 	}
 	warn(text) {
 		this._MessageBox.warn(text);
+	}
+	error(text) {
+		this._MessageBox.error(text);
+	}
+}
+
+class Dialog {
+	constructor() {
+
 	}
 }
 

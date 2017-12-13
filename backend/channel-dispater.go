@@ -40,6 +40,7 @@ func (d *ChannelDispatcher) runDispacter() {
 				l(d.channel.ID, msg)
 			}
 		case l := <-d.appendQ:
+			logrus.Debugf("[ChannelDispatcher:%s] append to listener", d.channel.ID)
 			d.listeners = append(d.listeners, l)
 		case <-d.quit:
 			return

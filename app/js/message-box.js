@@ -14,6 +14,9 @@ class MessageBox {
 	warn(text) {
 		this.makeBox("warn", text);
 	}
+	error(text) {
+		this.makeBox("error", text);
+	}
 	makeBox(level, text) {
 		var box = $.create("div", {
 			class: level,
