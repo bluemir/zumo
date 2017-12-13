@@ -5,7 +5,7 @@ func (b *backend) RegisterUserAgent(username string, ua UserAgent) error {
 
 	for _, d := range b.channels {
 		if d.isMember(username) {
-			d.AddListener(ua.OnMessage)
+			d.AddListener(ua)
 		}
 	}
 

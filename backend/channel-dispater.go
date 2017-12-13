@@ -1,21 +1,24 @@
 package backend
 
 import (
+	"sync"
+
 	"github.com/sirupsen/logrus"
 
 	"github.com/bluemir/zumo/datatype"
 )
 
 // ChannelListener is
-type ChannelListener func(channelId string, msg datatype.Message) error
+type ChannelListener interface {
+	OnMessage(channelID string, msg datatype.Message) error
+}
 
 // ChannelDispatcher is
 type ChannelDispatcher struct {
 	channel *datatype.Channel
 
-	quit      chan struct{}
-	messageQ  chan datatype.Message
-	appendQ   chan ChannelListener
+	lock *sync.RWMutex
+
 	listeners []ChannelListener
 }
 
@@ -23,47 +26,53 @@ type ChannelDispatcher struct {
 func NewChannelDispatcher(channel datatype.Channel) (*ChannelDispatcher, error) {
 	logrus.Debug("init channel Dispatcher")
 	dispatcher := &ChannelDispatcher{
-		channel:  &channel,
-		quit:     make(chan struct{}),
-		messageQ: make(chan datatype.Message),
-		appendQ:  make(chan ChannelListener),
+		channel: &channel,
+		lock:    &sync.RWMutex{},
 	}
-	go dispatcher.runDispacter()
-	return dispatcher, nil
-}
 
-func (d *ChannelDispatcher) runDispacter() {
-	for {
-		select {
-		case msg := <-d.messageQ:
-			for _, l := range d.listeners {
-				l(d.channel.ID, msg)
-			}
-		case l := <-d.appendQ:
-			logrus.Debugf("[ChannelDispatcher:%s] append to listener", d.channel.ID)
-			d.listeners = append(d.listeners, l)
-		case <-d.quit:
-			return
-		}
-	}
+	return dispatcher, nil
 }
 
 // AddListener is
 func (d *ChannelDispatcher) AddListener(l ChannelListener) {
-	d.appendQ <- l
+	d.lock.Lock()
+	defer d.lock.Unlock()
+
+	logrus.Debugf("[ChannelDispatcher:AddListener] %x", l)
+
+	d.listeners = append(d.listeners, l)
+}
+
+// RemoveListener is
+func (d *ChannelDispatcher) RemoveListener(l ChannelListener) {
+	d.lock.Lock()
+	defer d.lock.Unlock()
+
+	logrus.Debugf("[ChannelDispatcher:RemoveListener] %x", l)
+
+	for i, listener := range d.listeners {
+		if l == listener {
+			d.listeners = append(d.listeners[:i], d.listeners[i+1:]...)
+		}
+	}
+
+	d.listeners = append(d.listeners, l)
 }
 
 // AppendMessage is
 func (d *ChannelDispatcher) AppendMessage(msg datatype.Message) {
-	d.messageQ <- msg
-}
+	d.lock.RLock()
+	defer d.lock.RUnlock()
 
-// Close is
-func (d *ChannelDispatcher) Close() {
-	close(d.quit)
+	for _, listener := range d.listeners {
+		listener.OnMessage(d.channel.ID, msg)
+	}
 }
 
 func (d *ChannelDispatcher) isMember(username string) bool {
+	d.lock.RLock()
+	defer d.lock.RUnlock()
+
 	for _, name := range d.channel.Member {
 		if name == username {
 			return true

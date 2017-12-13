@@ -70,7 +70,6 @@ func (s *StoreEventHandler) PutChannel(channel *datatype.Channel) {
 // DeleteChannel is
 func (s *StoreEventHandler) DeleteChannel(channelID string) {
 	logrus.Debug("[StoreEventHandler:DeleteChannel]")
-	s.channels[channelID].Close()
 	delete(s.channels, channelID)
 
 	s.events.DeleteChannel <- DeleteChannelEvent{

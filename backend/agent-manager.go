@@ -53,7 +53,7 @@ func (m *UserAgentManager) DeliverJoin(name string, channelID string) {
 	logrus.Debugf("[UserAgentManager:DeliverJoin] name: %s, channelID: %s", name, channelID)
 
 	for _, a := range m.agents[name] {
-		m.backend.channels[channelID].AddListener(a.OnMessage)
+		m.backend.channels[channelID].AddListener(a)
 
 		a.OnJoinChannel(channelID)
 	}
