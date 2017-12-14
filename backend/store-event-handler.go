@@ -1,8 +1,6 @@
 package backend
 
 import (
-	"fmt"
-
 	"github.com/sirupsen/logrus"
 
 	"github.com/bluemir/zumo/datatype"
@@ -19,18 +17,19 @@ type StoreEventHandler struct {
 func (s *StoreEventHandler) PutChannel(channel *datatype.Channel) {
 	logrus.Debug("[StoreEventHandler:PutChannel]")
 	// find channel
-	if d, ok := s.channels[channel.ID]; ok {
+	if channel, ok := s.channels[channel.ID]; ok {
 
 		defer func(c datatype.Channel) {
-			d.channel = &c
-		}(*channel)
+			s.channelsLock.Lock()
+			defer s.channelsLock.Unlock()
+			s.channels[c.ID] = c
+		}(channel)
 
 		// get diff of member and emit join and leave
-		add, remove := diff(d.channel.Member, channel.Member)
+		add, remove := diff(channel.Member, channel.Member)
 		if len(add) == 0 && len(remove) == 0 {
-
 			s.events.UpdateChannel <- UpdateChannelEvent{
-				ChannelID: channel.ID,
+				Channel: channel,
 			}
 			// update channel info
 			return
@@ -42,28 +41,17 @@ func (s *StoreEventHandler) PutChannel(channel *datatype.Channel) {
 				ChannelID: channel.ID,
 				UserName:  a,
 			}
-			//s.events.EmitJoin(channel.ID, a)
 		}
 		for _, r := range remove {
 			s.events.Leave <- LeaveEvent{
 				ChannelID: channel.ID,
 				UserName:  r,
 			}
-			//s.events.EmitLeave(channel.ID, r)
 		}
-
 	} else {
-		d, err := NewChannelDispatcher(*channel)
-		if err != nil {
-			s.events.Error <- fmt.Errorf("[error:StoreEventHandler:PutChannel] error on create channel dispatcher")
-			return
-		}
-
-		s.channels[channel.ID] = d
 		s.events.CreateChannel <- CreateChannelEvent{
-			Channel: *channel,
+			Channel: channel,
 		}
-		//s.events.EmitCreateChannel(channel)
 	}
 }
 
@@ -79,7 +67,10 @@ func (s *StoreEventHandler) DeleteChannel(channelID string) {
 
 // PutMessage is
 func (s *StoreEventHandler) PutMessage(channelID string, msg *datatype.Message) {
-	s.channels[channelID].AppendMessage(*msg)
+	s.events.ReceiveMessage <- ReceiveMessageEvent{
+		ChannelID: channelID,
+		Message:   *msg,
+	}
 }
 
 func diff(old, new []string) (add, remove []string) {

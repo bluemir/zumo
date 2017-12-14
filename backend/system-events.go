@@ -26,7 +26,13 @@ type DeleteChannelEvent struct {
 
 // UpdateChannelEvent is
 type UpdateChannelEvent struct {
+	Channel datatype.Channel
+}
+
+// ReceiveMessageEvent is
+type ReceiveMessageEvent struct {
 	ChannelID string
+	Message   datatype.Message
 }
 
 // SystemEvents is
@@ -37,6 +43,8 @@ type SystemEvents struct {
 	CreateChannel chan CreateChannelEvent
 	DeleteChannel chan DeleteChannelEvent
 	UpdateChannel chan UpdateChannelEvent
+
+	ReceiveMessage chan ReceiveMessageEvent
 
 	Error chan error
 }
@@ -49,6 +57,8 @@ func NewSystemEvents() *SystemEvents {
 		CreateChannel: make(chan CreateChannelEvent),
 		DeleteChannel: make(chan DeleteChannelEvent),
 		UpdateChannel: make(chan UpdateChannelEvent),
+
+		ReceiveMessage: make(chan ReceiveMessageEvent, 8),
 
 		Error: make(chan error),
 	}

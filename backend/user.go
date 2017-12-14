@@ -48,7 +48,7 @@ func (b *backend) Join(channelID, username string) error {
 	// TODO  duplicate check
 	channel.Member = append(channel.Member, username)
 
-	_, err = b.store.PutChannel(channel)
+	_, err = b.store.PutChannel(channel) // maybe need hint?
 	if err != nil {
 		return err
 	}
@@ -62,10 +62,10 @@ func (b *backend) JoinnedChannel(username string) ([]datatype.Channel, error) {
 	result := []datatype.Channel{}
 
 	// find in in-memory data
-	for _, d := range b.channels {
-		for _, m := range d.channel.Member {
+	for _, channel := range b.channels {
+		for _, m := range channel.Member {
 			if m == username {
-				result = append(result, *d.channel)
+				result = append(result, channel)
 			}
 		}
 	}

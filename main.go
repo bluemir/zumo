@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"io/ioutil"
+	"math/rand"
+	"time"
 
 	"github.com/ghodss/yaml"
 	"github.com/sirupsen/logrus"
@@ -58,6 +60,7 @@ func main() {
 		logrus.Error(err)
 		return
 	}
+
 }
 
 // Config contain application wide configs
@@ -95,4 +98,28 @@ func config() (*Config, error) {
 	}
 
 	return conf, nil
+}
+
+func test() {
+	time.Sleep(1 * time.Second)
+	c := make(chan int, 4)
+
+	for i := 1; i <= 5; i++ {
+		go func(i int, ci <-chan int) {
+
+			for {
+				j := <-ci
+				logrus.Infof("Start worker: %d, job: %d", i, j)
+				time.Sleep(time.Duration(rand.Intn(500)+500) * time.Millisecond)
+				logrus.Warnf("End   worker: %d, job: %d", i, j)
+			}
+		}(i, c)
+	}
+
+	go func(co chan<- int) {
+		for i := 0; i < 1000; i++ {
+			co <- i
+		}
+	}(c)
+
 }
