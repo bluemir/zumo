@@ -1,9 +1,9 @@
 import $ from "/static/js/minilib.js";
-import InviteDialog from "/static/js/dialog/invite.js";
+
 import HookCreateDialog from "/static/js/dialog/hook-create.js";
+import "/static/js/dialog/invite.js";
 import "/static/js/dialog/kick.js";
 
-var inviteDialog = new InviteDialog();
 var hookCreateDialog = new HookCreateDialog();
 
 class ChannelMenu {
@@ -31,7 +31,7 @@ class ChannelMenu {
 	}
 	_invite() {
 		this.hide();
-		inviteDialog.show();
+		$.get("zumo-dialog.invite").show();
 	}
 	_leave() {
 

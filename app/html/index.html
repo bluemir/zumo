@@ -86,15 +86,6 @@
 					<button class="cancel">Cancel</button>
 				</form>
 			</article>
-			<article class="dialog invite">
-				<h2>Invite Channel</h2>
-				<form>
-					<!-- TODO -->
-					<input name="username" type="text"/>
-					<button class="ok"    >OK</button>
-					<button class="cancel">Cancel</button>
-				</form>
-			</article>
 			<article class="dialog hook-create">
 				<h2>Hook Create</h2>
 				<form>
@@ -103,6 +94,12 @@
 					<button class="cancel">Cancel</button>
 				</form>
 			</article>
+			<zumo-dialog class="invite">
+				<section class="title">Invite User</section>
+				<section class="body">
+					<input name="username" type="text" placeholder="User Name" />
+				</section>
+			</zumo-dialog>
 			<zumo-dialog class="kick">
 				<section class="title">Kick User</section>
 				<section class="body">
@@ -110,12 +107,8 @@
 				</section>
 			</zumo-dialog>
 			<article class="message-box">
-
 			</article>
-
 		</aside>
-
-
 		<script type="module" src="/static/js/main.js"></script>
 	</body>
 </html>

@@ -1,38 +1,23 @@
 import $ from "/static/js/minilib.js";
-import Dialog from "/static/js/dialog/dialog.js";
 import KV from "/static/js/kv.js";
 
-class InviteDialog extends Dialog {
-	constructor(){
-		super();
-		$.get(this.html, "button.ok").on("click", this._submit.bind(this));
-		$.get(this.html, "button.cancel").on("click", this._cancel.bind(this));
+$.get("zumo-dialog.invite").on("ok", async function(){
+	if (!KV.channelID) {
+		console.warn("[InviteDialog:_submit] cannot find target");
 	}
-	get html(){
-		return $.get(".dialog.invite");
-	}
-	async _submit(evt){
-		console.debug("[InviteDialog:_submit]");
-		evt.preventDefault();
-		if (!KV.channelID) {
-			console.warn("[InviteDialog:_submit] cannot find target");
+
+	var name = $.get($.get("zumo-dialog.invite"), "input[name=username]").value;
+
+	await $.request("PUT", "/api/v1/channels/:channelID/invite/:username", {
+		params: {
+			channelID: KV.channelID,
+			username: name,
 		}
+	})
+	this.hide();
+});
+$.get("zumo-dialog.invite").on("cancel", function(){
+	this.hide();
+});
 
-		var name = $.get(this.html, "input[name=username]").value;
-
-		await $.request("PUT", "/api/v1/channels/:channelID/invite/:username", {
-			params: {
-				channelID: KV.channelID,
-				username: name,
-			}
-		})
-		this.hide();
-	}
-	_cancel(evt){
-		console.debug("[InviteDialog:_cancel]");
-		evt.preventDefault();
-		this.hide();
-	}
-}
-
-export default InviteDialog;
+export default {};
