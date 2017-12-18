@@ -18,7 +18,7 @@ WEB_LIBS = $(shell find app/lib -type f -type f -print)
 
 DISTS += $(HTML_SOURCES:app/html/%=dist/html/%)
 DISTS += $(JS_SOURCES:app/js/%=dist/js/%)
-DISTS += dist/css/common.css
+DISTS += dist/css/common.css dist/css/custom-element.css
 DISTS += $(WEB_LIBS:app/lib/%=dist/lib/%)
 
 # Automatic runner
@@ -60,6 +60,8 @@ $(BIN_NAME): $(BIN_NAME).bin $(DISTS)
 ## Web dist
 dist/css/common.css: $(CSS_SOURCES)
 	lessc app/less/main.less $@
+dist/css/custom-element.css: $(CSS_SOURCES)
+	lessc app/less/custom-element.less $@
 dist/%: app/%
 	@mkdir -p $(basename $@)
 	cp $< $@

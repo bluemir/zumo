@@ -5,6 +5,7 @@
 		<style>
 			@import url("/static/css/common.css");
 		</style>
+		<link rel="import" href="/static/html/components/dialog.html">
 	</head>
 	<body>
 		<section id="main">
@@ -32,6 +33,7 @@
 					<button>*</button>
 					<ul>
 						<li><button class="invite">Invite</button></li>
+						<li><button class="kick">Kick</button></li>
 						<li><button class="leave">Leave</button></li>
 						<li><button class="hook-create">Create Hook</button></li>
 					</ul>
@@ -101,10 +103,19 @@
 					<button class="cancel">Cancel</button>
 				</form>
 			</article>
+			<zumo-dialog class="kick">
+				<section class="title">Kick User</section>
+				<section class="body">
+					<input name="username" type="text" placeholder="User Name" />
+				</section>
+			</zumo-dialog>
 			<article class="message-box">
 
 			</article>
+
 		</aside>
+
+
 		<script type="module" src="/static/js/main.js"></script>
 	</body>
 </html>

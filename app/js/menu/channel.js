@@ -1,6 +1,7 @@
 import $ from "/static/js/minilib.js";
 import InviteDialog from "/static/js/dialog/invite.js";
 import HookCreateDialog from "/static/js/dialog/hook-create.js";
+import "/static/js/dialog/kick.js";
 
 var inviteDialog = new InviteDialog();
 var hookCreateDialog = new HookCreateDialog();
@@ -11,10 +12,11 @@ class ChannelMenu {
 
 		$.get(this.html, "button.invite").on("click", this._invite.bind(this));
 		$.get(this.html, "button.leave").on("click", this._leave.bind(this));
+		$.get(this.html, "button.kick").on("click", this._kick.bind(this));
 		$.get(this.html, "button.hook-create").on("click", this._hookCreate.bind(this));
 	}
 	get html(){
-		return $.get(".menu.channel")
+		return $.get(".menu.channel");
 	}
 	show() {
 		console.debug("[channel:menu:show]")
@@ -37,6 +39,11 @@ class ChannelMenu {
 	_hookCreate() {
 		this.hide();
 		hookCreateDialog.show();
+	}
+	_kick() {
+		this.hide();
+		//console.log($.get("zumo-dialog"))
+		$.get("zumo-dialog.kick").show();
 	}
 
 }
