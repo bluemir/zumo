@@ -51,14 +51,14 @@ type SystemEvents struct {
 
 func NewSystemEvents() *SystemEvents {
 	return &SystemEvents{
-		Join:  make(chan JoinEvent),
-		Leave: make(chan LeaveEvent),
+		Join:  make(chan JoinEvent, 8),
+		Leave: make(chan LeaveEvent, 8),
 
-		CreateChannel: make(chan CreateChannelEvent),
-		DeleteChannel: make(chan DeleteChannelEvent),
-		UpdateChannel: make(chan UpdateChannelEvent),
+		CreateChannel: make(chan CreateChannelEvent, 8),
+		DeleteChannel: make(chan DeleteChannelEvent, 8),
+		UpdateChannel: make(chan UpdateChannelEvent, 8),
 
-		ReceiveMessage: make(chan ReceiveMessageEvent, 8),
+		ReceiveMessage: make(chan ReceiveMessageEvent, 16),
 
 		Error: make(chan error),
 	}

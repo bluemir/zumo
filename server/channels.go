@@ -70,3 +70,14 @@ func (server *Server) invite(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"msg": "ok"})
 }
+
+func (server *Server) kick(c *gin.Context) {
+	channelID := c.Param("channelID")
+	username := c.Param("username")
+
+	err := server.backend.Leave(channelID, username)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+	}
+	c.JSON(http.StatusOK, gin.H{"msg": "ok"})
+}

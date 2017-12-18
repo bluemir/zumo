@@ -41,6 +41,7 @@ func Run(b backend.Backend, p pod.Pod, conf *Config) error {
 
 	app.PUT("/api/v1/channels/:channelID/join", server.CheckAuth, server.joinChannel)
 	app.PUT("/api/v1/channels/:channelID/invite/:username", server.CheckAuth, server.invite)
+	app.PUT("/api/v1/channels/:channelID/kick/:username", server.CheckAuth, server.kick)
 
 	app.GET("/api/v1/channels/:channelID/messages", server.CheckAuth, server.findMessages)
 	app.POST("/api/v1/channels/:channelID/messages", server.CheckAuth, server.postMessage)

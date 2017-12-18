@@ -56,7 +56,27 @@ func (b *backend) Join(channelID, username string) error {
 	return nil
 }
 func (b *backend) Leave(channelID, username string) error {
+
+	// b.channels[channelID].Member.append(username)
+	channel, err := b.store.GetChannel(channelID)
+	if err != nil {
+		return err
+	}
+	// TODO  duplicate check
+	for i, m := range channel.Member {
+		if m == username {
+			channel.Member = append(channel.Member[:i], channel.Member[i+1:]...)
+			break
+		}
+	}
+
+	_, err = b.store.PutChannel(channel) // maybe need hint?
+	if err != nil {
+		return err
+	}
+
 	return nil
+
 }
 func (b *backend) JoinnedChannel(username string) ([]datatype.Channel, error) {
 	result := []datatype.Channel{}
