@@ -56,8 +56,6 @@ func (b *backend) Join(channelID, username string) error {
 	return nil
 }
 func (b *backend) Leave(channelID, username string) error {
-
-	// b.channels[channelID].Member.append(username)
 	channel, err := b.store.GetChannel(channelID)
 	if err != nil {
 		return err
@@ -70,7 +68,8 @@ func (b *backend) Leave(channelID, username string) error {
 		}
 	}
 
-	_, err = b.store.PutChannel(channel) // maybe need hint?
+	// check member if not exist return error
+	_, err = b.store.PutChannel(channel)
 	if err != nil {
 		return err
 	}

@@ -49,9 +49,7 @@ type Backend interface {
 type backend struct {
 	store store.Store
 
-	channels map[string]datatype.Channel
-
-	//channelCache     map[string]datatype.Channel // cache
+	channels     map[string]datatype.Channel
 	channelsLock sync.RWMutex
 
 	userAgentManager *UserAgentManager // client connector manager
@@ -65,7 +63,12 @@ func New(conf *Config) (Backend, error) {
 	events := NewSystemEvents()
 
 	// store
-	if store, err := store.New(conf.Store.Driver, conf.Store.Endpoint, &StoreEventHandler{b, events}, nil); err != nil {
+	if store, err := store.New(
+		conf.Store.Driver,
+		conf.Store.Endpoint,
+		&StoreEventHandler{b, events},
+		nil,
+	); err != nil {
 		return nil, err
 	} else {
 		b.store = store

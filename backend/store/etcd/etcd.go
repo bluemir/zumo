@@ -1,11 +1,12 @@
 package etcd
 
 import (
+	"context"
+	"fmt"
 	"time"
 
 	"github.com/bluemir/zumo/backend/store"
-	"github.com/bluemir/zumo/datatype"
-	"github.com/coreos/etcd/client"
+	"github.com/coreos/etcd/clientv3"
 )
 
 func init() {
@@ -14,63 +15,54 @@ func init() {
 
 // New is
 func New(path string, sync store.Sync, opt map[string]string) (store.Store, error) {
-	cfg := client.Config{
-		Endpoints: []string{"http://127.0.0.1:2379"},
-		Transport: client.DefaultTransport,
-		// set timeout per request to fail fast when the target endpoint is unavailable
-		HeaderTimeoutPerRequest: time.Second,
-	}
-	c, err := client.New(cfg)
+	d, err := time.ParseDuration(opt["time-out"])
 	if err != nil {
-		return nil, err
+		d = 5 * time.Second
+	}
+	// TODO opt for time out
+	cli, err := clientv3.New(clientv3.Config{
+		Endpoints:   []string{path},
+		DialTimeout: d,
+	})
+	if err != nil {
+		// handle error!
 	}
 
-	api := client.NewKeysAPI(c)
+	go watchInit(cli, sync)
 
-	return &Store{sync, api}, nil
+	//defer cli.Close()
+
+	return &Store{sync, cli}, nil
 }
 
 // Store is
 type Store struct {
 	sync store.Sync
-	client.KeysAPI
+	clientv3.KV
 }
 
-func (s *Store) FindMessages(channelID string, limit int) ([]datatype.Message, error) {
-	return nil, nil
-}
-func (s *Store) PutMessage(channelID string, msg *datatype.Message) (*datatype.Message, error) {
-	return nil, nil
-}
+func watchInit(cli clientv3.Watcher, sync store.Sync) {
+	channelCh := cli.Watch(
+		context.Background(),
+		"/channels",
+		clientv3.WithPrefix(),
+	)
+	msgCh := cli.Watch(
+		context.Background(),
+		"/messages",
+		clientv3.WithPrefix(),
+	)
+	for {
+		select {
+		case res := <-channelCh:
+			for _, ev := range res.Events {
+				fmt.Printf("%s %q : %q\n", ev.Type, ev.Kv.Key, ev.Kv.Value)
+			}
 
-func (s *Store) FindUser() ([]datatype.User, error) {
-	return nil, nil
-}
-func (s *Store) GetUser(username string) (*datatype.User, error) {
-	return nil, nil
-}
-func (s *Store) PutUser(user *datatype.User) (*datatype.User, error) {
-	return nil, nil
-}
-
-func (s *Store) GetToken(username, hashedKey string) (*datatype.Token, error) {
-	return nil, nil
-}
-func (s *Store) PutToken(token *datatype.Token) (*datatype.Token, error) {
-	return nil, nil
-}
-
-func (s *Store) GetHook(hookID string) (*datatype.Hook, error) {
-	return nil, nil
-}
-func (s *Store) PutHook(*datatype.Hook) (*datatype.Hook, error) {
-	return nil, nil
-}
-
-// genaral data, for pod or bots.
-func (s *Store) GetData(namespace, key string, data interface{}) error {
-	return nil
-}
-func (s *Store) PutData(namespace, key string, data interface{}) error {
-	return nil
+		case res := <-msgCh:
+			for _, ev := range res.Events {
+				fmt.Printf("%s %q : %q\n", ev.Type, ev.Kv.Key, ev.Kv.Value)
+			}
+		}
+	}
 }
