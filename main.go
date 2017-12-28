@@ -60,7 +60,6 @@ func main() {
 		logrus.Error(err)
 		return
 	}
-
 }
 
 // Config contain application wide configs

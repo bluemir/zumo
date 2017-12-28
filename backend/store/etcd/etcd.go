@@ -2,11 +2,14 @@ package etcd
 
 import (
 	"context"
-	"fmt"
+	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/bluemir/zumo/backend/store"
+	"github.com/bluemir/zumo/datatype"
 	"github.com/coreos/etcd/clientv3"
+	"github.com/sirupsen/logrus"
 )
 
 func init() {
@@ -52,16 +55,41 @@ func watchInit(cli clientv3.Watcher, sync store.Sync) {
 		"/messages",
 		clientv3.WithPrefix(),
 	)
+	logrus.Debug("[store:etcd:watchStart]")
 	for {
 		select {
 		case res := <-channelCh:
 			for _, ev := range res.Events {
-				fmt.Printf("%s %q : %q\n", ev.Type, ev.Kv.Key, ev.Kv.Value)
+				logrus.Debugf("[store:etcd:receive-event] channel changed %s %q : %q\n", ev.Type, ev.Kv.Key, ev.Kv.Value)
+				if ev.Type == clientv3.EventTypePut {
+					channel := &datatype.Channel{}
+					err := json.Unmarshal(ev.Kv.Value, channel)
+					if err != nil {
+						logrus.Warnf("[store:etcd:receive-event] Unmarshal error: %s", err.Error())
+						continue
+					}
+					sync.PutChannel(channel)
+				}
 			}
 
 		case res := <-msgCh:
 			for _, ev := range res.Events {
-				fmt.Printf("%s %q : %q\n", ev.Type, ev.Kv.Key, ev.Kv.Value)
+				logrus.Debugf("[store:etcd:receive-event] channel changed %s %q", ev.Type, ev.Kv.Key)
+				if ev.Type == clientv3.EventTypePut {
+					msg := &datatype.Message{}
+					err := json.Unmarshal(ev.Kv.Value, msg)
+					if err != nil {
+						logrus.Warnf("[store:etcd:receive-event] Unmarshal error: %s", err.Error())
+						continue
+					}
+					arr := strings.SplitN(string(ev.Kv.Key), "/", 4)
+					if len(arr) < 4 {
+						logrus.Warnf("[store:etcd:receive-event] parse error: connot find channelID from key")
+						continue
+					}
+					channelID := arr[2]
+					sync.PutMessage(channelID, msg)
+				}
 			}
 		}
 	}

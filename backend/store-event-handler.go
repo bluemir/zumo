@@ -15,7 +15,6 @@ type StoreEventHandler struct {
 
 // PutChannel is callback from store
 func (s *StoreEventHandler) PutChannel(c *datatype.Channel) {
-	logrus.Debug("[StoreEventHandler:PutChannel]")
 	// find channel
 	s.channelsLock.Lock()
 	defer s.channelsLock.Unlock()
@@ -27,6 +26,7 @@ func (s *StoreEventHandler) PutChannel(c *datatype.Channel) {
 
 		// get diff of member and emit join and leave
 		add, remove := diff(channel.Member, c.Member)
+		logrus.Debugf("[StoreEventHandler:PutChannel] member add: %+v, remove: %+v", add, remove)
 		if len(add) == 0 && len(remove) == 0 {
 			s.events.UpdateChannel <- UpdateChannelEvent{
 				Channel: channel,
@@ -50,7 +50,7 @@ func (s *StoreEventHandler) PutChannel(c *datatype.Channel) {
 		}
 	} else {
 		s.events.CreateChannel <- CreateChannelEvent{
-			Channel: channel,
+			Channel: *c,
 		}
 	}
 }

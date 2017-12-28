@@ -15,7 +15,6 @@ type Pod interface {
 
 // New is
 func New(b backend.Backend) (Pod, error) {
-
 	p := &pod{b}
 	return p, p.InitBots()
 }
@@ -30,9 +29,11 @@ func (p *pod) InitBots() error {
 		return err
 	}
 
+	logrus.Debugf("[pod:InitBots] users %q", users)
+
 	for _, user := range users {
 		if driver, ok := user.Labels["zumo.bot.driver"]; ok {
-			logrus.Debugf("[pod:InitBots] '%s' found. driver: '%s'", user.Name, driver)
+			logrus.Infof("[pod:InitBots] '%s' found. driver: '%s'", user.Name, driver)
 
 			err := p.initBot(driver, user) // must use copy of datatype.user
 			if err != nil {

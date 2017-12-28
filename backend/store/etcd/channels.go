@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/coreos/etcd/clientv3"
+
 	"github.com/bluemir/zumo/datatype"
 )
 
@@ -13,6 +15,7 @@ func (s *Store) FindChannels() ([]datatype.Channel, error) {
 	resp, err := s.Get(
 		context.Background(),
 		"/channels/",
+		clientv3.WithPrefix(),
 		//clientv3.WithSort(clientv3.SortByKey, clientv3.SortDescend),
 		//clientv3.WithLimit(limit),
 	)

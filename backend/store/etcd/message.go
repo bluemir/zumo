@@ -14,7 +14,8 @@ func (s *Store) FindMessages(channelID string, limit int) ([]datatype.Message, e
 	resp, err := s.Get(context.Background(),
 		fmt.Sprintf("/messages/%s/", channelID),
 		clientv3.WithSort(clientv3.SortByKey, clientv3.SortDescend),
-		//clientv3.WithLimit(limit),
+		clientv3.WithPrefix(),
+		clientv3.WithLimit(int64(limit)),
 	)
 	if err != nil {
 		return nil, err

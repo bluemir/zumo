@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/coreos/etcd/clientv3"
+
 	"github.com/bluemir/zumo/datatype"
 )
 
@@ -13,6 +15,7 @@ func (s *Store) FindUser() ([]datatype.User, error) {
 	resp, err := s.KV.Get(
 		context.Background(),
 		"/users/",
+		clientv3.WithPrefix(),
 	)
 	if err != nil {
 		return nil, err
