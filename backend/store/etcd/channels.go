@@ -39,8 +39,11 @@ func (s *Store) GetChannel(channelID string) (*datatype.Channel, error) {
 	if err != nil {
 		return nil, err
 	}
+	if len(resp.Kvs) == 0 {
+		return nil, nil
+	}
 
-	if len(resp.Kvs) != 1 {
+	if len(resp.Kvs) > 1 {
 		return nil, errors.New("is not a unique")
 	}
 

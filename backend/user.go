@@ -29,7 +29,7 @@ func (b *backend) CreateUser(username string, labels map[string]string) (*dataty
 		return nil, err
 	}
 
-	logrus.Debugf("[backend:CreateUser] '%s' created!", username, labels)
+	logrus.Debugf("[backend:CreateUser] '%s' created! (with %+v)", username, labels)
 	return user, nil
 }
 

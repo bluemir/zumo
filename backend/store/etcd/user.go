@@ -39,8 +39,11 @@ func (s *Store) GetUser(username string) (*datatype.User, error) {
 		return nil, err
 	}
 
-	if len(resp.Kvs) != 1 {
-		return nil, errors.New("not unique")
+	if len(resp.Kvs) == 0 {
+		return nil, nil
+	}
+	if len(resp.Kvs) > 1 {
+		return nil, errors.New("not unique user")
 	}
 
 	user := &datatype.User{}

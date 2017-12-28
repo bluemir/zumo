@@ -11,7 +11,7 @@ import (
 // Store is
 type Store interface {
 	FindChannels() ([]datatype.Channel, error)
-	GetChannel(channelID string) (*datatype.Channel, error)
+	GetChannel(channelID string) (*datatype.Channel, error) // Must return nil if not exist
 	PutChannel(channel *datatype.Channel) (*datatype.Channel, error)
 	DeleteChannel(ID string) error
 
@@ -19,7 +19,7 @@ type Store interface {
 	PutMessage(channelID string, msg *datatype.Message) (*datatype.Message, error)
 
 	FindUser() ([]datatype.User, error)
-	GetUser(username string) (*datatype.User, error)
+	GetUser(username string) (*datatype.User, error) // Must return nil if not exist
 	PutUser(user *datatype.User) (*datatype.User, error)
 
 	GetToken(username, hashedKey string) (*datatype.Token, error)
