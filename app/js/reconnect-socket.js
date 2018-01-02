@@ -1,6 +1,9 @@
 import $ from "/static/js/minilib.js";
 
 class ReconnetSocket {
+	static protocal() {
+		return document.location.protocol.includes("https") ? "wss:" : "ws:"
+	}
 	constructor(url){
 		// connect -> open -> message -> close -> disconnect
 		// connect -> open -> message -> close -> (reconnect) -> open -> message -> close -> disconnect

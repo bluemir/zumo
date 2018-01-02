@@ -9,13 +9,16 @@ import ReconnetSocket from "/static/js/reconnect-socket.js";
 import KV from "/static/js/kv.js";
 import Buttons from "/static/js/buttons.js";
 
-var socket = new ReconnetSocket("ws://" + location.host + "/ws");
+
+var socket = new ReconnetSocket(ReconnetSocket.protocal()+ "//" + location.host + "/ws");
 socket.on("open", function(evt){
 	console.debug("[event:websocket:open]");
+	context.log.info("conneted!")
 	//
 });
 socket.on("close", function(evt){
 	console.debug("[event:websocket:close]");
+	context.log.warn("disconnected!");
 	// close
 });
 socket.on("message", function(evt){
