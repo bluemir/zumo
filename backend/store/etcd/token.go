@@ -7,10 +7,10 @@ import (
 	"fmt"
 
 	"github.com/bluemir/zumo/datatype"
+	"github.com/coreos/etcd/clientv3"
 )
 
 func (s *Store) GetToken(username, hashedKey string) (*datatype.Token, error) {
-
 	resp, err := s.KV.Get(
 		context.Background(),
 		fmt.Sprintf("/tokens/%s:%s", username, hashedKey),
@@ -30,6 +30,28 @@ func (s *Store) GetToken(username, hashedKey string) (*datatype.Token, error) {
 	}
 
 	return token, nil
+}
+func (s *Store) FindToken(username string) ([]datatype.Token, error) {
+	resp, err := s.Get(
+		context.Background(),
+		fmt.Sprintf("/tokens/%s:", username),
+		clientv3.WithPrefix(),
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	result := []datatype.Token{}
+	for _, pair := range resp.Kvs {
+		token := &datatype.Token{}
+		err := json.Unmarshal(pair.Value, token)
+		if err != nil {
+			return nil, err
+		}
+		result = append(result, *token)
+	}
+	return result, nil
+
 }
 func (s *Store) PutToken(token *datatype.Token) (*datatype.Token, error) {
 	str, err := json.Marshal(token)

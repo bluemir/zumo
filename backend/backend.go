@@ -89,5 +89,12 @@ func New(conf *Config) (Backend, error) {
 	// start main loop, if want improve perfomance increse woker
 	go b.runDispatcher(events)
 
+	// default channel
+	if len(b.channels) == 0 {
+		b.CreateChannel("random", map[string]string{
+			"zumo.channel.default": "true",
+		})
+	}
+
 	return b, nil
 }

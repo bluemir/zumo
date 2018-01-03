@@ -1,0 +1,97 @@
+<!--
+
+<zumo-menu id="channel-menu">
+	<section class="button">channel menu</section>
+	<section class="menu">
+		<button event="open-kick-dialog">Kick</button>
+		<button event="leave">Leave</button>
+	</section>
+</zumo-menu>
+$.get("zumo-menu#channel-menu").on("leave", function(){
+	// Do leave ops
+})
+-->
+<template>
+	<style>
+	@import url("/static/css/custom-element.css");
+
+	:host {
+		position: relative;
+
+		background: var(--default-background);
+		color: var(--default-foreground);
+
+		border: 1px solid green;
+		padding: 1rem;
+	}
+	ul {
+		display: none;
+
+		background: var(--default-background);
+		color: var(--default-foreground);
+
+		top: 1rem;
+		left: 1rem;
+	}
+	ul .show {
+		display: block;
+	}
+
+	</style>
+	<div class="menu application">
+		<button><content selector=".button"></content></button>
+		<ul>
+			<!-- TODO for item -->
+		</ul>
+	</div>
+</template>
+<script>
+(function(template){
+	class ZumoMenu extends HTMLElement {
+		constructor() {
+			super();
+		}
+		// callback
+		// createdCallback
+		// attachedCallback
+		// detachedCallback
+		// attributeChangedCallback(attrName, oldVal, newVal)
+
+		createdCallback(){
+			var shadow = this.createShadowRoot();
+			var clone = document.importNode(template.content, true)
+			shadow.appendChild(clone);
+
+			var ul = shadow.querySelector("ul")
+			var that = this;
+			[].forEach.call(shadow.querySelectorAll(".menu button"), function(el) {
+				// add button to ul
+				var li = shadow.createElement("li");
+				li.appendChild(el);
+
+				// add event
+				el.addEventListener("click", function(e){
+					var event = new CustomEvent(el.getAttribute("event") || "openmenu", {});
+					that.dispatchEvent(event);
+				});
+
+				ul.appnedChild(li)
+			})
+		}
+
+		show() {
+			var event = new CustomEvent("show", {});
+			this.dispatchEvent(event);
+
+			this.classList.add("show");
+		}
+		hide() {
+			this.classList.remove("show");
+		}
+		toggle() {
+			this.classList.toggle("show");
+		}
+	}
+	document.registerElement('zumo-menu', ZumoMenu);
+})(document.currentScript.ownerDocument.querySelector('template'))
+</script>

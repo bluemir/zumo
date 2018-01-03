@@ -10,6 +10,7 @@ class ApplicationMenu {
 		$.get(".application.menu>button").on("click", this.toggle.bind(this))
 
 		$.get(this.html, "button.bot-create").on("click", this._showBotCreateDialog.bind(this))
+		$.get(this.html, "button.my-profile").on("click", this._showMyProfile.bind(this))
 		$.get(this.html, "button.testbtn").on("click", this._showMessageBox.bind(this))
 	}
 	get html(){
@@ -32,6 +33,22 @@ class ApplicationMenu {
 		context.log.warn("test");
 		this.hide();
 	}
+	async _showMyProfile() {
+		// some ajax and some data
+		var res = await $.request("GET", "/api/v1/users/me");
+		console.log(res);
+		$.get("zumo-dialog.my-profile .body").innerHTML = "<pre>" +JSON.stringify(res.json, null, 4) + "</pre>";
+		$.get("zumo-dialog.my-profile").show();
+		this.hide();
+	}
 }
+
+
+$.get("zumo-dialog.my-profile").on("cancel", function(){
+	this.hide();
+});
+$.get("zumo-dialog.my-profile").on("ok", function(){
+	this.hide();
+});
 
 export default ApplicationMenu;

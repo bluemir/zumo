@@ -42,3 +42,16 @@ func (server *Server) joinnedChannel(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, channelIDs)
 }
+func (server *Server) getUserInfo(c *gin.Context) {
+	username := c.Param("username")
+	if username == "me" {
+		username = c.MustGet(keyUsername).(string)
+	}
+	user, err := server.backend.GetUser(username)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, user)
+		return
+	}
+	c.JSON(http.StatusOK, user)
+
+}

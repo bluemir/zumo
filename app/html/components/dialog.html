@@ -49,7 +49,7 @@
 			shadow.appendChild(clone);
 
 			this.addEventListener("submit", this._submit.bind(this));
-			shadow.querySelector(".cancel").addEventListener("click",  this._reset.bind(this));
+			shadow.querySelector(".cancel").addEventListener("click",  this._cancel.bind(this));
 		}
 
 		_submit(evt) {
@@ -60,7 +60,7 @@
 
 			this.dispatchEvent(event);
 		}
-		_reset(evt) {
+		_cancel(evt) {
 			console.debug("[zumo-dialog:_reset]");
 			evt.preventDefault();
 
@@ -70,6 +70,9 @@
 		}
 
 		show() {
+			var event = new CustomEvent("show", {});
+			this.dispatchEvent(event);
+
 			this.classList.add("show");
 		}
 		hide() {

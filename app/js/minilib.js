@@ -46,6 +46,9 @@ var $ = {
 						}
 						resolve(result)
 					} else {
+						if(req.getResponseHeader("Content-Type").includes("application/json")) {
+							result.json = JSON.parse(result.text);
+						}
 						reject(result);
 					}
 				}

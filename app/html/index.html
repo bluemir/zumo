@@ -16,7 +16,8 @@
 					<ul>
 						<li><button class="bot-create">Create Bot</button></li>
 						<!--li><button class="channel-create">Create channel</button></li-->
-						<li><button class="user-join-token"></button></li>
+						<li><button class="my-profile">My Profile</button></li>
+						<li><button class="user-join-token">Invite Token</button></li>
 						<li><button class="testbtn">RESERVE</button></li>
 					</ul>
 				</div>
@@ -61,6 +62,7 @@
 		</section>
 		<!-- dialogs -->
 		<aside>
+			<article class="message-box"></article>
 			<article class="dialog channel-create">
 				<h2>Create Channel</h2>
 				<form>
@@ -106,8 +108,10 @@
 					<input name="username" type="text" placeholder="User Name" />
 				</section>
 			</zumo-dialog>
-			<article class="message-box">
-			</article>
+			<zumo-dialog class="my-profile">
+				<section class="title">My Profile</section>
+				<section class="body"></section>
+			</zumo-dialog>
 		</aside>
 		<script type="module" src="/static/js/main.js"></script>
 	</body>

@@ -33,6 +33,7 @@ func Run(b backend.Backend, p pod.Pod, conf *Config) error {
 
 	app.GET("/ws", server.CheckAuth, server.ws)
 
+	app.GET("/api/v1/users/:username", server.CheckAuth, server.getUserInfo)
 	app.GET("/api/v1/users/:username/joinned-channel", server.CheckAuth, server.joinnedChannel)
 
 	app.GET("/api/v1/channels", server.CheckAuth, server.listChannels)

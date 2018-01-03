@@ -78,6 +78,7 @@ func (server *Server) kick(c *gin.Context) {
 	err := server.backend.Leave(channelID, username)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"msg": err.Error()})
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{"msg": "ok"})
 }

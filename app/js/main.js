@@ -2,6 +2,7 @@ import $ from "/static/js/minilib.js";
 import ChannelList from "/static/js/channels.js";
 import InputBox from "/static/js/input-box.js";
 import Messages from "/static/js/messages.js";
+import context from "/static/js/context.js";
 
 
 import ReconnetSocket from "/static/js/reconnect-socket.js";

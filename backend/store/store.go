@@ -23,6 +23,7 @@ type Store interface {
 	PutUser(user *datatype.User) (*datatype.User, error)
 
 	GetToken(username, hashedKey string) (*datatype.Token, error)
+	FindToken(username string) ([]datatype.Token, error)
 	PutToken(token *datatype.Token) (*datatype.Token, error)
 
 	GetHook(hookID string) (*datatype.Hook, error)

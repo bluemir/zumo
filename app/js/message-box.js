@@ -8,7 +8,6 @@ class MessageBox {
 		return $.get("article.message-box");
 	}
 	info(text) {
-		console.debug("called info")
 		this.makeBox("info", text);
 	}
 	warn(text) {

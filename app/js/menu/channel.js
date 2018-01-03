@@ -45,6 +45,5 @@ class ChannelMenu {
 		//console.log($.get("zumo-dialog"))
 		$.get("zumo-dialog.kick").show();
 	}
-
 }
 export default ChannelMenu;
