@@ -59,3 +59,21 @@ import ApplicationMenu from "/static/js/menu/application.js";
 var channelMenu         = new ChannelMenu();
 var inputMenu           = new InputMenu(inputbox);
 var applicationMenu     = new ApplicationMenu();
+
+
+$.get("zumo-menu").on("menu", function(e) {
+	switch(e.detail.name) {
+		case "invite":
+			$.get("zumo-dialog.invite").show();
+			break;
+		case "kick":
+			$.get("zumo-dialog.kick").show();
+			this.toggle();
+			break;
+		case "leave":
+			break;
+		case "hook-create":
+			// TODO popup hook create
+			break;
+	}
+})

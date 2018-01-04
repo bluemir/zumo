@@ -6,6 +6,7 @@
 			@import url("/static/css/common.css");
 		</style>
 		<link rel="import" href="/static/html/components/dialog.html">
+		<link rel="import" href="/static/html/components/menu.html">
 	</head>
 	<body>
 		<section id="main">
@@ -39,6 +40,15 @@
 						<li><button class="hook-create">Create Hook</button></li>
 					</ul>
 				</div>
+				<zumo-menu class="menu">
+					<button slot="button">+</button>
+					<section slot="menu">
+						<button name="invite">Invite</button>
+						<button name="kick">Kick</button>
+						<button name="leave">Leave</button>
+						<button name="hook-create">Create Hook</button>
+					</section>
+				</zumo-menu>
 			</div>
 			<article class="messages"></article>
 			<form class="input-box">
