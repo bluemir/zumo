@@ -1,4 +1,4 @@
-<template class="zumo-dialog">
+<template>
 	<style>
 	@import url("/static/css/custom-element.css");
 
@@ -22,10 +22,10 @@
 
 	</style>
 	<h2>
-		<content select=".title"></content>
+		<slot name="title"></slot>
 	</h2>
 	<form>
-		<content select=".body"></content>
+		<slot name="body"></slot>
 		<button class="ok"     type="submit">OK    </button>
 		<button class="cancel" type="reset" >Cancel</button>
 	</form>
@@ -35,7 +35,13 @@
 	class ZumoDialog extends HTMLElement {
 		constructor() {
 			super();
-			console.debug("create?")
+
+			var clone = document.importNode(template.content, true)
+			var shadow = this["--shadow"] = this.attachShadow({mode: 'open'})
+			shadow.appendChild(clone);
+
+			this.addEventListener("submit", this._submit.bind(this));
+			shadow.querySelector(".cancel").addEventListener("click",  this._cancel.bind(this));
 		}
 		// callback
 		// createdCallback
@@ -43,14 +49,14 @@
 		// detachedCallback
 		// attributeChangedCallback(attrName, oldVal, newVal)
 
-		createdCallback(){
+		/*createdCallback(){
 			var shadow = this.createShadowRoot();
 			var clone = document.importNode(template.content, true)
 			shadow.appendChild(clone);
 
 			this.addEventListener("submit", this._submit.bind(this));
 			shadow.querySelector(".cancel").addEventListener("click",  this._cancel.bind(this));
-		}
+		}*/
 
 		_submit(evt) {
 			console.debug("[zumo-dialog:_submit]");
@@ -82,6 +88,7 @@
 			this.classList.toggle("show");
 		}
 	}
-	document.registerElement('zumo-dialog', ZumoDialog);
-})(document.currentScript.ownerDocument.querySelector('template.zumo-dialog'))
+	//document.registerElement('zumo-dialog', ZumoDialog);
+	customElements.define("zumo-dialog", ZumoDialog);
+})(document.currentScript.ownerDocument.querySelector('template'))
 </script>
