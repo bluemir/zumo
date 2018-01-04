@@ -2,6 +2,7 @@ package backend
 
 import (
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/pkg/errors"
@@ -21,6 +22,11 @@ func (b *backend) CreateHook(channelID, username string) (*datatype.Hook, error)
 }
 func (b *backend) DoHook(hookID, text string, detail json.RawMessage) (*datatype.Message, error) {
 	logrus.Debugf("[backend:DoHook] HookID: %s, %s", hookID, text)
+
+	if strings.Trim(text, " \r\n\t") == "" {
+		return nil, errors.New("hook must have text")
+	}
+
 	hook, err := b.store.GetHook(hookID)
 	if err != nil {
 		return nil, errors.Wrap(err, "fail to find hook")

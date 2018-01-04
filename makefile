@@ -33,7 +33,7 @@ DIRS = $(shell find . -name dist -prune -o -name ".git" -prune -o -type d -print
 		$(WEB_LIBS)| tr " " "\n"
 run: $(BIN_NAME)
 	go test ./backend/...
-	./$(BIN_NAME)
+	./$(BIN_NAME) #--config ../zumo-config.yaml
 auto-run:
 	while true; do \
 		make .sources | entr -rd make run ;  \
