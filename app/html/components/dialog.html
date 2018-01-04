@@ -21,9 +21,7 @@
 	}
 
 	</style>
-	<h2>
-		<slot name="title"></slot>
-	</h2>
+	<slot name="title"></slot>
 	<form>
 		<slot name="body"></slot>
 		<button class="ok"     type="submit">OK    </button>
@@ -40,23 +38,10 @@
 			var shadow = this["--shadow"] = this.attachShadow({mode: 'open'})
 			shadow.appendChild(clone);
 
-			this.addEventListener("submit", this._submit.bind(this));
-			shadow.querySelector(".cancel").addEventListener("click",  this._cancel.bind(this));
+			shadow.addEventListener("submit", this._submit.bind(this));
+			shadow.addEventListener("reset", this._cancel.bind(this));
+			//shadow.querySelector(".cancel").addEventListener("click",  this._cancel.bind(this));
 		}
-		// callback
-		// createdCallback
-		// attachedCallback
-		// detachedCallback
-		// attributeChangedCallback(attrName, oldVal, newVal)
-
-		/*createdCallback(){
-			var shadow = this.createShadowRoot();
-			var clone = document.importNode(template.content, true)
-			shadow.appendChild(clone);
-
-			this.addEventListener("submit", this._submit.bind(this));
-			shadow.querySelector(".cancel").addEventListener("click",  this._cancel.bind(this));
-		}*/
 
 		_submit(evt) {
 			console.debug("[zumo-dialog:_submit]");

@@ -37,7 +37,7 @@ class ApplicationMenu {
 		// some ajax and some data
 		var res = await $.request("GET", "/api/v1/users/me");
 		console.log(res);
-		$.get("zumo-dialog.my-profile .body").innerHTML = "<pre>" +JSON.stringify(res.json, null, 4) + "</pre>";
+		$.get("zumo-dialog.my-profile [slot=body]").innerHTML = "<pre>" +JSON.stringify(res.json, null, 4) + "</pre>";
 		$.get("zumo-dialog.my-profile").show();
 		this.hide();
 	}

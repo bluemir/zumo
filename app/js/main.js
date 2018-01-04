@@ -77,3 +77,28 @@ $.get("zumo-menu").on("menu", function(e) {
 			break;
 	}
 })
+
+// create channel-dialog
+$.get("zumo-dialog.create-channel").on("ok", async function(evt){
+	var name = $.get(this, "input[type=text]").value;
+	try {
+		var channel = await $.request("POST", "/api/v1/channels", {
+			body: {
+				Name: name
+			}
+		});
+		console.log("create channel", name)
+		context.log.info(`${name} channel created!`);
+		this.hide();
+		this.clear();
+	} catch(e) {
+		// TODO show error message
+		console.warn("error on create channel", name)
+		context.log.error("error on create channel!");
+		this.hide();
+	}
+}).on("cancel", function(){
+	$.get(this, "input[type=text]").value = "";
+	this.hide();
+})
+

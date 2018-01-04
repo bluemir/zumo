@@ -73,14 +73,10 @@
 		<!-- dialogs -->
 		<aside>
 			<article class="message-box"></article>
-			<article class="dialog channel-create">
-				<h2>Create Channel</h2>
-				<form>
-					<input type="text" />
-					<button class="ok"     type="submit">Create</button>
-					<button class="cancel" type="button">Cancel</button>
-				</form>
-			</article>
+			<zumo-dialog class="create-channel">
+				<h2 slot="title">Create Channel</h2>
+				<input slot="body" type="text" />
+			</zumo-dialog>
 			<article class="dialog bot-create">
 				<h2>Create bot</h2>
 				<form>
@@ -107,19 +103,19 @@
 				</form>
 			</article>
 			<zumo-dialog class="invite">
-				<section slot="title">Invite User</section>
+				<h2 slot="title">Invite User</h2>
 				<section slot="body">
 					<input name="username" type="text" placeholder="User Name" />
 				</section>
 			</zumo-dialog>
 			<zumo-dialog class="kick">
-				<section slot="title">Kick User</section>
+				<h2 slot="title">Kick User</h2>
 				<section slot="body">
 					<input name="username" type="text" placeholder="User Name" />
 				</section>
 			</zumo-dialog>
 			<zumo-dialog class="my-profile">
-				<section slot="title">My Profile</section>
+				<h2 slot="title">My Profile</h2>
 				<section slot="body"></section>
 			</zumo-dialog>
 		</aside>
