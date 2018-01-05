@@ -75,17 +75,15 @@
 			<article class="message-box"></article>
 			<zumo-dialog class="create-channel">
 				<h2 slot="title">Create Channel</h2>
-				<input slot="body" type="text" />
+				<input slot="body" type="text" placeholder="Channel Name" />
 			</zumo-dialog>
-			<article class="dialog bot-create">
-				<h2>Create bot</h2>
-				<form>
-					<input name="name"   type="text" placeholder="Name">
-					<input name="driver" type="text" placeholder="Driver">
-					<button class="ok"    >Create</button>
-					<button class="cancel">Cancel</button>
-				</form>
-			</article>
+			<zumo-dialog class="create-bot">
+				<h2 slot="title">Create Bot</h2>
+				<section slot="body">
+					<input name="name"   type="text" placeholder="Name" />
+					<input name="driver" type="text" placeholder="Driver" />
+				</section>
+			</zumo-dialog>
 			<article class="dialog channel-join hide">
 				<h2>Join Channel</h2>
 				<form>

@@ -1,6 +1,5 @@
 import $ from "/static/js/minilib.js";
 
-import ChannelCreateDialog from "/static/js/dialog/channel-create.js";
 import ChannelJoinDialog from "/static/js/dialog/channel-join.js";
 
 function init() {

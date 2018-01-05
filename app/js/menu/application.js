@@ -1,9 +1,6 @@
 import $ from "/static/js/minilib.js";
 import context from "/static/js/context.js";
 
-import BotCreateDialog from "/static/js/dialog/bot-create.js";
-var botCreateDialog = new BotCreateDialog();
-
 class ApplicationMenu {
 	constructor() {
 		// open button
@@ -26,7 +23,8 @@ class ApplicationMenu {
 		$.get(this.html, "ul").classList.toggle("show");
 	}
 	_showBotCreateDialog() {
-		botCreateDialog.show();
+		//botCreateDialog.show();
+		$.get("zumo-dialog.create-bot").show();
 		this.hide();
 	}
 	_showMessageBox() {

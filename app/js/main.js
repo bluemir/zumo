@@ -80,7 +80,7 @@ $.get("zumo-menu").on("menu", function(e) {
 
 // create channel-dialog
 $.get("zumo-dialog.create-channel").on("ok", async function(evt){
-	var name = $.get(this, "input[type=text]").value;
+	var name = $.get(this, "input[type=text]").value.trim();
 	try {
 		var channel = await $.request("POST", "/api/v1/channels", {
 			body: {
@@ -100,5 +100,40 @@ $.get("zumo-dialog.create-channel").on("ok", async function(evt){
 }).on("cancel", function(){
 	$.get(this, "input[type=text]").value = "";
 	this.hide();
-})
+});
+
+// create bot dialog
+$.get("zumo-dialog.create-bot").on("ok", async function(evt) {
+	var name = $.get(this, "input[name=name]").value.trim();
+	var driver = $.get(this, "input[name=driver]").value.trim();
+
+
+	if (name == "") {
+		context.log.error("name is blank");
+		console.error("[dialog:bot-create:_submit] name is blank")
+		return
+	}
+
+	if (driver == "") {
+		context.log.error("driver is blank");
+		console.error("[dialog:bot-create:_submit] driver is blank")
+		return
+	}
+
+	try {
+		await $.request("POST", "/api/v1/bots", {
+			body: {
+				Name: name,
+				Driver: driver,
+			}
+		});
+		this.hide()
+		context.log.info("bot created");
+	} catch(e) {
+		console.error("[dialog:bot-create:_submit]", e)
+		this.hide()
+	}
+}).on("cancel", function(evt) {
+	this.hide();
+});
 
