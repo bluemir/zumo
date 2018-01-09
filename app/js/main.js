@@ -14,7 +14,6 @@ var socket = new ReconnetSocket(ReconnetSocket.protocal()+ "//" + location.host 
 socket.on("open", function(evt){
 	console.debug("[event:websocket:open]");
 	context.log.info("conneted!")
-	//
 });
 socket.on("close", function(evt){
 	console.debug("[event:websocket:close]");
@@ -29,7 +28,7 @@ socket.on("message", function(evt){
 			channelList.refresh();
 			break;
 		case "message":
-			// TODO Apppend to Message Panel
+			// Apppend to Message Panel
 			messages.appendMessage(packet)
 			break;
 		default:
@@ -38,6 +37,9 @@ socket.on("message", function(evt){
 	// append to message panel
 	// messages[channel.id].append(message)
 });
+setInterval(function() {
+	socket.send("ping");
+}, 60 * 1000);
 
 var inputbox = new InputBox();
 var channelList = new ChannelList();

@@ -23,7 +23,7 @@ class ReconnetSocket {
 	}
 	send(data, options) {
 		try{
-			this._socket.send(data,option);
+			this._socket.send(data, options);
 		} catch (e){
 			this._emit("error", e)
 		}
