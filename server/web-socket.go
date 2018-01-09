@@ -2,17 +2,17 @@ package server
 
 import (
 	"encoding/json"
+	"io"
 
 	"github.com/bluemir/zumo/datatype"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/net/websocket"
 )
 
 type translater struct {
 	encoder *json.Encoder
 	decoder *json.Decoder
-
-	q chan struct{}
 }
 
 func (t *translater) OnMessage(channelID string, msg datatype.Message) error {
@@ -38,7 +38,16 @@ func (t *translater) OnLeaveChannel(channelID string) {
 	t.channelChnaged(channelID)
 }
 func (t *translater) runDispatcher() {
-	<-t.q
+	// Wait until close socket
+	for {
+		msg := map[string]interface{}{}
+		if err := t.decoder.Decode(msg); err == io.EOF {
+			logrus.Debugf("[websocket:translater:runDispatcher] Disconnected")
+			return
+		} else if err != nil {
+			// skip;
+		}
+	}
 }
 
 func (server *Server) ws(c *gin.Context) {
@@ -49,7 +58,7 @@ func (server *Server) ws(c *gin.Context) {
 		encoder := json.NewEncoder(conn)
 		decoder := json.NewDecoder(conn)
 
-		agent := &translater{encoder, decoder, make(chan struct{})}
+		agent := &translater{encoder, decoder}
 
 		server.backend.RegisterUserAgent(username, agent)
 
