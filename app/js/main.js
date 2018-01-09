@@ -8,7 +8,6 @@ import context from "/static/js/context.js";
 import ReconnetSocket from "/static/js/reconnect-socket.js";
 
 import KV from "/static/js/kv.js";
-import Buttons from "/static/js/buttons.js";
 
 
 var socket = new ReconnetSocket(ReconnetSocket.protocal()+ "//" + location.host + "/ws");
@@ -49,36 +48,39 @@ channelList.onTargetChange(function(channel){
 	$.get(".channel-header h2").innerHTML = channel.Name;
 })
 
-Buttons(inputbox);
-
 // init menus
-import ChannelMenu from "/static/js/menu/channel.js"
 import InputMenu from "/static/js/menu/input.js"
 import ApplicationMenu from "/static/js/menu/application.js";
 
-var channelMenu         = new ChannelMenu();
 var inputMenu           = new InputMenu(inputbox);
 var applicationMenu     = new ApplicationMenu();
 
-
-$.get("zumo-menu").on("menu", function(e) {
+$.get("zumo-menu.channel").on("menu", function(e) {
 	switch(e.detail.name) {
 		case "invite":
 			$.get("zumo-dialog.invite").show();
+			this.hide();
 			break;
 		case "kick":
 			$.get("zumo-dialog.kick").show();
-			this.toggle();
+			this.hide();
 			break;
 		case "leave":
 			break;
 		case "hook-create":
-			// TODO popup hook create
+			$.get("zumo-dialog.create-hook").show()
+			this.hide();
 			break;
 	}
-})
+});
+/*$.get("zumo-menu.application").on("menu", function(e) {
+	switch(e.detail.name) {
+		case
+	}
+});*/
 
-// create channel-dialog
+
+// create channel dialog
 $.get("zumo-dialog.create-channel").on("ok", async function(evt){
 	var name = $.get(this, "input[type=text]").value.trim();
 	try {
@@ -137,3 +139,83 @@ $.get("zumo-dialog.create-bot").on("ok", async function(evt) {
 	this.hide();
 });
 
+$.get("button.channel-join").on("click", async function() {
+	var dialog = $.get("zumo-dialog.join-channel")
+
+	var res = await $.request("GET", "/api/v1/channels")
+	$.get(dialog, "select").clear();
+	res.json.map(function(e) {
+		return $.create("option", {
+			$text: `${e.Name}`,
+			"value": e.ID
+		});
+	}).forEach(function(e){
+		$.get(dialog, "select").appendChild(e);
+	}, this);
+
+	$.get("zumo-dialog.join-channel").show()
+});
+
+$.get("button.channel-create").on("click", async function() {
+	$.get("zumo-dialog.create-channel").show()
+});
+
+// join channel dialog
+$.get("zumo-dialog.join-channel").on("ok", async function(evt) {
+	evt.preventDefault();
+	var channelID = $.get(this.html, "select").value
+
+	await $.request("PUT", `/api/v1/channels/${channelID}/join`, {})
+
+	this.hide();
+}).on("cancel", function(){
+	this.hide();
+})
+
+// kick dialog
+$.get("zumo-dialog.kick").on("ok", async function(){
+	if (!KV.channelID) {
+		console.warn("[kickDialog:_submit] cannot find target");
+	}
+
+	var username = $.get(kickDialog, "input[name=username]").value;
+
+	try {
+		var res = await $.request("PUT", "/api/v1/channels/:channelID/kick/:username", {
+			params: {
+				channelID: KV.channelID,
+				username: username,
+			}
+		});
+	} catch(e) {
+		console.warn(e)
+		context.log.warn(e.text);
+	}
+
+	this.hide();
+}).on("cancel", function(){
+	this.hide();
+});
+
+// create hook dialog
+$.get("zumo-dialog.create-hook").on("ok", async function(evt) {
+	evt.preventDefault();
+	var username = $.get(this, "input[name=username]").value
+
+	if (!KV.channelID) {
+		console.warn("[HookCreateDialog:_submit] cannot find target");
+	}
+
+	var res = await $.request("POST", "/api/v1/hooks", {
+		body: {
+			ChannelID: KV.channelID,
+			Username:  username,
+		}
+	});
+
+	// TODO show ID
+	console.log(`Hook ID: '${res.json.ID}'`)
+	this.hide();
+}).on("cancel", function () {
+	this.hide();
+})

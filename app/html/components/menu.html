@@ -77,6 +77,9 @@ $.get("zumo-menu#channel-menu").on("leave", function(){
 		toggle() {
 			this["--shadow"].querySelector("ul").classList.toggle("show")
 		}
+		hide() {
+			this["--shadow"].querySelector("ul").classList.remove("show")
+		}
 	}
 	customElements.define("zumo-menu", ZumoMenu);
 
