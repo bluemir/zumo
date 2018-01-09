@@ -86,7 +86,6 @@ func (list *UserAgentList) AppendAgent(a UserAgent) {
 	defer list.lock.Unlock()
 
 	list.agents = append(list.agents, a)
-
 }
 func (list *UserAgentList) RemoveAgent(a UserAgent) {
 

@@ -52,10 +52,10 @@ channelList.onTargetChange(function(channel){
 
 // init menus
 import InputMenu from "/static/js/menu/input.js"
-import ApplicationMenu from "/static/js/menu/application.js";
+//import ApplicationMenu from "/static/js/menu/application.js";
 
 var inputMenu           = new InputMenu(inputbox);
-var applicationMenu     = new ApplicationMenu();
+//var applicationMenu     = new ApplicationMenu();
 
 $.get("zumo-menu.channel").on("menu", function(e) {
 	switch(e.detail.name) {
@@ -75,11 +75,28 @@ $.get("zumo-menu.channel").on("menu", function(e) {
 			break;
 	}
 });
-/*$.get("zumo-menu.application").on("menu", function(e) {
+$.get("zumo-menu.application").on("menu", async function(e) {
 	switch(e.detail.name) {
-		case
+		case "my-profile":
+			var res = await $.request("GET", "/api/v1/users/me");
+			$.get("zumo-dialog.my-profile [slot=body]").innerHTML = "<pre>" +JSON.stringify(res.json, null, 4) + "</pre>";
+			$.get("zumo-dialog.my-profile").show();
+			this.hide();
+			break;
+		case "bot-create":
+			$.get("zumo-dialog.create-bot").show();
+			this.hide();
+			break;
+		case "register-token":
+			this.hide();
+			break;
 	}
-});*/
+});
+$.get("zumo-dialog.my-profile").on("ok", function(){
+	this.hide();
+}).on("cancel", function() {
+	this.hide();
+});
 
 
 // create channel dialog

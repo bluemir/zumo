@@ -12,16 +12,14 @@
 		<section id="main">
 			<div class="title">
 				<h1>Zumo</h1>
-				<div class="menu application">
-					<button type="button">*</button>
-					<ul>
-						<li><button class="bot-create">Create Bot</button></li>
-						<!--li><button class="channel-create">Create channel</button></li-->
-						<li><button class="my-profile">My Profile</button></li>
-						<li><button class="user-join-token">Invite Token</button></li>
-						<li><button class="testbtn">RESERVE</button></li>
-					</ul>
-				</div>
+				<zumo-menu class="application">
+					<button slot="button">+</button>
+					<section slot="menu">
+						<button name="bot-create">Create Bot</button>
+						<button name="my-profile">My Profile</button>
+						<button name="register-token">Regitster Token</button>
+					</section>
+				</zumo-menu>
 			</div>
 			<nav class="channels">
 				<button class="channel-create">Create Channel</button>

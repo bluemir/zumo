@@ -9,6 +9,8 @@ type UserAgent interface {
 	OnMessage(channelID string, msg datatype.Message) error
 	OnJoinChannel(channelID string)
 	OnLeaveChannel(channelID string)
+
+	// ReadEvent() <-chan interface{}
 }
 
 // SystemAgent is

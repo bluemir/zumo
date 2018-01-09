@@ -75,7 +75,6 @@ func (b *backend) Leave(channelID, username string) error {
 	}
 
 	return nil
-
 }
 func (b *backend) JoinnedChannel(username string) ([]datatype.Channel, error) {
 	result := []datatype.Channel{}
