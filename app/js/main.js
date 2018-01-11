@@ -4,11 +4,9 @@ import InputBox from "/static/js/input-box.js";
 import Messages from "/static/js/messages.js";
 import context from "/static/js/context.js";
 
-
 import ReconnetSocket from "/static/js/reconnect-socket.js";
 
 import KV from "/static/js/kv.js";
-
 
 var socket = new ReconnetSocket(ReconnetSocket.protocal()+ "//" + location.host + "/ws");
 socket.on("open", function(evt){
@@ -52,10 +50,7 @@ channelList.onTargetChange(function(channel){
 
 // init menus
 import InputMenu from "/static/js/menu/input.js"
-//import ApplicationMenu from "/static/js/menu/application.js";
-
 var inputMenu           = new InputMenu(inputbox);
-//var applicationMenu     = new ApplicationMenu();
 
 $.get("zumo-menu.channel").on("menu", function(e) {
 	switch(e.detail.name) {
@@ -237,4 +232,23 @@ $.get("zumo-dialog.create-hook").on("ok", async function(evt) {
 	this.hide();
 }).on("cancel", function () {
 	this.hide();
-})
+});
+
+$.get("zumo-dialog.invite").on("ok", async function(evt) {
+	if (!KV.channelID) {
+		console.warn("[InviteDialog:_submit] cannot find target");
+	}
+
+	var name = $.get($.get("zumo-dialog.invite"), "input[name=username]").value;
+
+	await $.request("PUT", "/api/v1/channels/:channelID/invite/:username", {
+		params: {
+			channelID: KV.channelID,
+			username: name,
+		}
+	})
+	this.hide();
+}).on("cancel", function(evt) {
+	this.hide();
+});
+
