@@ -49,7 +49,7 @@ class Messages {
 		var msg = message.Text.replace(/(\r|\n|\r\n)/g, "<br/>")
 		var elem = $.create("li", {
 			class: "message",
-			$html: `<a class="author">${message.Sender}</a><p class="text">${msg}</p>`,
+			$html: `<a class="author" data-tooltip-text="${message.Time}">${message.Sender}</a><p class="text">${msg}</p>`,
 		});
 
 		elem.data = message;

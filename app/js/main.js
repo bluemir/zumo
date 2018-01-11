@@ -38,7 +38,7 @@ socket.on("message", function(evt){
 	// messages[channel.id].append(message)
 });
 setInterval(function() {
-	socket.send("ping");
+	socket.send('{"ping":"ping"}');
 }, 60 * 1000);
 
 var inputbox = new InputBox();
@@ -161,7 +161,7 @@ $.get("zumo-dialog.create-bot").on("ok", async function(evt) {
 $.get("button.channel-join").on("click", async function() {
 	var dialog = $.get("zumo-dialog.join-channel")
 
-	var res = await $.request("GET", "/api/v1/channels")
+	var res = await $.request("GET", "/api/v1/channels");
 	$.get(dialog, "select").clear();
 	res.json.map(function(e) {
 		return $.create("option", {
@@ -182,7 +182,7 @@ $.get("button.channel-create").on("click", async function() {
 // join channel dialog
 $.get("zumo-dialog.join-channel").on("ok", async function(evt) {
 	evt.preventDefault();
-	var channelID = $.get(this.html, "select").value
+	var channelID = $.get(this, "select").value
 
 	await $.request("PUT", `/api/v1/channels/${channelID}/join`, {})
 

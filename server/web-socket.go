@@ -40,12 +40,14 @@ func (t *translater) OnLeaveChannel(channelID string) {
 func (t *translater) runDispatcher() {
 	// Wait until close socket
 	for {
-		msg := map[string]interface{}{}
+		msg := &json.RawMessage{}
 		if err := t.decoder.Decode(msg); err == io.EOF {
 			logrus.Debugf("[websocket:translater:runDispatcher] Disconnected")
 			return
 		} else if err != nil {
 			// skip;
+			logrus.Warnf("[websocket:translater:runDispatcher] client send unexpected message: %s", err.Error())
+			return
 		}
 	}
 }
